@@ -1,9 +1,17 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAXSIZE 32
-#define NQUEEN 14
+#define MAXSIZE 32 // The maximum supported problem size.
+#define NQUEEN 14  // The size of the problem.
 
+/**
+ * A stateType represents a partially filled NxN chess board in the N-queens
+ * problem.  The board is filled progressively from the top row to the bottom.
+ * Each row can contain a single queen.
+ * The .col field records the columns in which queens have been placed.
+ * The .rd and .ld fields record the columns in the next unfilled row that
+ * are under diagonal attack by one of the previously placed queens.
+ */ 
 typedef struct state {
     u_int32_t col;  // columns containing queens
     u_int32_t ld;   // columns under left-diagonal attack
@@ -14,6 +22,7 @@ void state_print(stateType *s, int nbits);
 void binstr(u_int32_t value, int nbits, char *buf, int buflen);
 int count_solutions(stateType s);
 
+// The value of a stateType's .col field when a solution has been found.
 const u_int32_t done = (1 << NQUEEN) - 1;
 
 int main(int argc, char** argv)
@@ -31,15 +40,18 @@ int main(int argc, char** argv)
     return 0;
 }
 
+/**
+ * Print a representation of the given partial board state, s.
+ */
 void state_print(stateType *s, int nbits)
 {
     char col_buf[MAXSIZE];
     char ld_buf[MAXSIZE];
     char rd_buf[MAXSIZE];
 
-    binstr(s->col, nbits, &col_buf, MAXSIZE);
-    binstr(s->ld, nbits, &ld_buf, MAXSIZE);
-    binstr(s->rd, nbits, &rd_buf, MAXSIZE);
+    binstr(s->col, nbits, (char *)&col_buf, MAXSIZE);
+    binstr(s->ld, nbits, (char *)&ld_buf, MAXSIZE);
+    binstr(s->rd, nbits, (char *)&rd_buf, MAXSIZE);
 
     printf("<col: %s  ld: %s  rd: %s>\n", col_buf, ld_buf, rd_buf);
 }
@@ -69,16 +81,16 @@ void binstr(u_int32_t value, int nbits, char *buf, int buflen)
     buf[nbits] = 0;
 }
 
+/**
+ * Recursively count the number of N-queens solutions that can be found from the
+ * given partial board state, s.
+ */
 int count_solutions(const stateType s)
 {
     u_int32_t newq = 1 << NQUEEN;
     u_int32_t excl = s.col | s.ld | s.rd;
     stateType newState;
     int solutions = 0;
-
-    // printf("count_solutions(%d):  ", level);
-    // state_print(&board[level], NQUEEN);
-    // printf("\n");
 
     for (newq = 1 << NQUEEN; newq; newq = newq >> 1) {
         if (!(excl & newq)) {
