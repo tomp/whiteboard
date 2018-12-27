@@ -46,26 +46,28 @@ func main() {
 
 }
 
+// newState returns a newly allocated, zero-valued stateType.
 func newState(size uint32) stateType {
 	return stateType{size, 0, 0, 0}
 }
 
-func (s *stateType) addQueen(newQueen bitsType) stateType {
-	result := *s
-	result.col = s.col | newQueen
-	result.rd = (result.rd | newQueen) >> 1
-	result.ld = (result.ld | newQueen) << 1
-	return result
+// addQueen returns a new stateType, created from the given stateType by
+// adding a new queen at the position indicated by the newQueen bit mask.
+// It's assumed that only one bit of newQueen is non-zero, and that (s.col & newQueen) is zero.
+func addQueen(s *stateType, newQueen bitsType) stateType {
+	return stateType{s.sz,
+		s.col | newQueen,
+		(s.rd | newQueen) >> 1,
+		(s.ld | newQueen) << 1}
 }
 
 func countSolutions(s stateType) int {
 	solutions := 0
 	excl := s.col | s.ld | s.rd
-	// fmt.Printf("countSolutions(%08b)  excl: %08b\n", s.col, excl)
 	newQueen := bitsType(1 << (s.sz - 1))
 	for newQueen != 0 {
 		if (newQueen & excl) == 0 {
-			newState := s.addQueen(newQueen)
+			newState := addQueen(&s, newQueen)
 			if newState.col == done {
 				return 1
 			}
