@@ -8,19 +8,13 @@ import (
 	"runtime/pprof"
 )
 
-const (
-	MAXSIZE = 16
-)
-
 type bitsType uint32
-type locType [MAXSIZE]uint8
 
 type stateType struct {
 	sz  uint32   // board size
 	col bitsType // position is occupied by a queen
 	rd  bitsType // position is attacked from the left
 	ld  bitsType // position is attacked from the right
-	// loc locType  // row numbers of placed queens
 }
 
 // flags
@@ -74,9 +68,8 @@ func countSolutions(s stateType) int {
 			newState := s.addQueen(newQueen)
 			if newState.col == done {
 				return 1
-			} else {
-				solutions += countSolutions(newState)
 			}
+			solutions += countSolutions(newState)
 		}
 		newQueen = newQueen >> 1
 	}
