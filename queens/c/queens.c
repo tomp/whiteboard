@@ -12,9 +12,9 @@ typedef struct state {
 
 void state_print(stateType *s, int nbits);
 void binstr(u_int32_t value, int nbits, char *buf, int buflen);
+int count_solutions(stateType s);
 
 const u_int32_t done = (1 << NQUEEN) - 1;
-stateType board[MAXSIZE];
 
 int main(int argc, char** argv)
 {
@@ -23,10 +23,9 @@ int main(int argc, char** argv)
     printf("Count solutions to the %d-queens problem\n", NQUEEN);
 
     stateType initState = {0, 0, 0};
-    memcpy(&board[0], &initState, sizeof(struct state));
-    // state_print(&board[0], NQUEEN);
+    // state_print(&initState, NQUEEN);
 
-    count = count_solutions(0);
+    count = count_solutions(initState);
     printf("Found %d solutions\n", count);
 
     return 0;
@@ -67,13 +66,14 @@ void binstr(u_int32_t value, int nbits, char *buf, int buflen)
             buf[i] = '0';
         mask = mask >> 1;
     }
-    buf[nbits] = NULL;
+    buf[nbits] = 0;
 }
 
-int count_solutions(int level)
+int count_solutions(const stateType s)
 {
     u_int32_t newq = 1 << NQUEEN;
-    u_int32_t excl = board[level].col | board[level].ld | board[level].rd;
+    u_int32_t excl = s.col | s.ld | s.rd;
+    stateType newState;
     int solutions = 0;
 
     // printf("count_solutions(%d):  ", level);
@@ -82,14 +82,14 @@ int count_solutions(int level)
 
     for (newq = 1 << NQUEEN; newq; newq = newq >> 1) {
         if (!(excl & newq)) {
-            if ((board[level].col | newq) == done) {
+            if ((s.col | newq) == done) {
                 // printf("SOLUTION\n");
                 return 1;
             }
-            board[level + 1].col = board[level].col | newq;
-            board[level + 1].ld = (board[level].ld | newq) << 1;
-            board[level + 1].rd = (board[level].rd | newq) >> 1;
-            solutions += count_solutions(level+1);
+            newState.col = s.col | newq;
+            newState.ld = (s.ld | newq) << 1;
+            newState.rd = (s.rd | newq) >> 1;
+            solutions += count_solutions(newState);
         }
     }
     return solutions;
