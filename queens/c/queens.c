@@ -85,7 +85,7 @@ void binstr(u_int32_t value, int nbits, char *buf, int buflen)
  * Recursively count the number of N-queens solutions that can be found from the
  * given partial board state, s.
  */
-int count_solutions(const stateType s)
+int count_solutions(const level, const u_int32_t col, const u_int32_t ld, const u_int32_t rd)
 {
     u_int32_t excl = s.col | s.ld | s.rd;
     u_int32_t newq;
