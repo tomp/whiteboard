@@ -87,12 +87,12 @@ void binstr(u_int32_t value, int nbits, char *buf, int buflen)
  */
 int count_solutions(const stateType s)
 {
-    u_int32_t newq = 1 << NQUEEN;
     u_int32_t excl = s.col | s.ld | s.rd;
+    u_int32_t newq;
     stateType newState;
     int solutions = 0;
 
-    for (newq = 1 << NQUEEN; newq; newq = newq >> 1) {
+    for (newq = 1 << (NQUEEN - 1); newq; newq = newq >> 1) {
         if (!(excl & newq)) {
             if ((s.col | newq) == done) {
                 // printf("SOLUTION\n");
