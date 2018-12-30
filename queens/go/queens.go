@@ -41,7 +41,7 @@ func main() {
 	}
 
 	initState := newState(uint32(*boardSize))
-	solutions := countSolutions(initState)
+	solutions := countSolutions(0, initState)
 	fmt.Printf("Found %d solutions\n", solutions)
 
 }
@@ -61,17 +61,21 @@ func addQueen(s *stateType, newQueen bitsType) stateType {
 		(s.ld | newQueen) << 1}
 }
 
-func countSolutions(s stateType) int {
+func countSolutions(level uint32, s stateType) int {
 	solutions := 0
-	excl := s.col | s.ld | s.rd
+	excl := (s.col | s.ld | s.rd) & done
+
+	if excl == done {
+		return 0
+	} else if level+1 == s.sz {
+		return 1
+	}
+
 	newQueen := bitsType(1 << (s.sz - 1))
 	for newQueen != 0 {
 		if (newQueen & excl) == 0 {
 			newState := addQueen(&s, newQueen)
-			if newState.col == done {
-				return 1
-			}
-			solutions += countSolutions(newState)
+			solutions += countSolutions(level+1, newState)
 		}
 		newQueen = newQueen >> 1
 	}
