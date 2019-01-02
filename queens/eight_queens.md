@@ -8,15 +8,17 @@
 
 ```python
 import numpy as np
+import timeit
     
 def print_solutions(solns):
     for i, b in enumerate(solns):
         print("{:2d}: {}".format(i+1, " ".join(map(str, b))))
 
-def timings(fn, maxtime=15, nrun=1):
+def timings(fn, maxtime=15, nrun=0):
     result = []
-    n, dt = 6, 0
+    n, dt = 6, 0.001
     while dt < maxtime:
+        nrun = max(1, int(0.2/dt))
         dt = timeit.timeit("fn(n)", number=nrun, globals=locals()) / nrun
         result.append((n, dt))
         n += 1              
@@ -70,13 +72,13 @@ def plot_timings(*named_timings, log=True):
 
     <div class="bk-root">
         <a href="https://bokeh.pydata.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
-        <span id="948e2222-71d8-4505-b918-8d9c5050a689">Loading BokehJS ...</span>
+        <span id="76c5978e-eb05-4d8b-adb9-f57811cca537">Loading BokehJS ...</span>
     </div>
 
 
 
 
-### 1. Consider all possible arrangements of the 8 queens on distinct rows and columns.
+### 1. Consider all possible arrangements of the N queens on distinct rows and columns.
 
 
 ```python
@@ -85,7 +87,6 @@ NQUEEN = 10
 
 
 ```python
-import timeit
 from itertools import permutations
 
 def attack(b):
@@ -118,14 +119,14 @@ n, y = zip(*time1)
 pred1 = expfit(n, y)
 ```
 
-    exp(a): 9.149036
-    b: -19.683358688872186
-     6: 0.002185  pred: 0.001659
-     7: 0.013701  pred: 0.015179
-     8: 0.111955  pred: 0.138876
-     9: 1.089616  pred: 1.270585
-    10: 11.465833  pred: 11.624630
-    11: 131.192340  pred: 106.354154
+    exp(a): 9.521513
+    b: -20.04513039053966
+     6: 0.001820  pred: 0.001468
+     7: 0.013404  pred: 0.013978
+     8: 0.110075  pred: 0.133094
+     9: 1.078596  pred: 1.267255
+    10: 11.899116  pred: 12.066183
+    11: 139.236723  pred: 114.888314
 
 
 ### 2. Find solutions using an exhaustive depth-first search.
@@ -162,15 +163,15 @@ n, y = zip(*time2)
 pred2 = expfit(n, y)
 ```
 
-    exp(a): 5.278673
-    b: -16.625263718561403
-     6: 0.001448  pred: 0.001303
-     7: 0.007182  pred: 0.006877
-     8: 0.033885  pred: 0.036303
-     9: 0.170547  pred: 0.191630
-    10: 0.911772  pred: 1.011550
-    11: 5.250576  pred: 5.339643
-    12: 32.986274  pred: 28.186233
+    exp(a): 5.243480
+    b: -16.55145491075078
+     6: 0.001526  pred: 0.001347
+     7: 0.007787  pred: 0.007065
+     8: 0.032386  pred: 0.037047
+     9: 0.163617  pred: 0.194254
+    10: 0.930854  pred: 1.018569
+    11: 5.345769  pred: 5.340844
+    12: 33.316671  pred: 28.004604
 
 
 #### b. Only check attacks on newly added queens 
@@ -213,16 +214,16 @@ n, y = zip(*time2b)
 pred2b = expfit(n, y)
 ```
 
-    exp(a): 4.905262
-    b: -16.721051843460007
-     6: 0.000896  pred: 0.000762
-     7: 0.003798  pred: 0.003739
-     8: 0.016835  pred: 0.018342
-     9: 0.084330  pred: 0.089970
-    10: 0.406006  pred: 0.441328
-    11: 1.876752  pred: 2.164829
-    12: 10.625082  pred: 10.619054
-    13: 63.569585  pred: 52.089241
+    exp(a): 4.854287
+    b: -16.648432405440953
+     6: 0.001088  pred: 0.000770
+     7: 0.003651  pred: 0.003737
+     8: 0.015542  pred: 0.018142
+     9: 0.075160  pred: 0.088066
+    10: 0.339158  pred: 0.427496
+    11: 1.858727  pred: 2.075189
+    12: 10.469381  pred: 10.073561
+    13: 65.571665  pred: 48.899954
 
 
 ### 3. Track search state using tuples of bit vectors.
@@ -234,14 +235,11 @@ from collections import namedtuple
 from itertools import islice
 
 def bits(i, nbits=NQUEEN):
+    """Return a string containing the nbits-binary representation of the integer i."""
     return bin((1 << nbits) | i)[3:]
 
 Queens = namedtuple('Queens', ['col', 'rd', 'ld', 'loc'])
 Queens.__repr__ = lambda q: "{}, {}, {} ({})".format(bits(q.col), bits(q.rd), bits(q.ld), ",".join(map(str, q.loc)))
-
-def new_queens(col):
-    newq = 1 << col
-    return Queens(newq, newq >> 1, newq << 1, (col,))
 
 def successors(state, nqueen):
     col = nqueen - 1
@@ -249,10 +247,14 @@ def successors(state, nqueen):
     excl = state.col | state.ld | state.rd
     while newq:
         if not (newq & excl):
-            yield Queens(state.col | newq, (state.rd | newq) >> 1, (state.ld | newq) << 1, state.loc + (col,))
+            yield Queens(state.col | newq,(state.rd | newq) >> 1, (state.ld | newq) << 1, state.loc + (col,))
         col -= 1
         newq = newq >> 1
-        
+```
+
+
+```python
+# Verify that successors() works the way we expect it to.
 q0 = Queens(0, 0, 0, ())
 print(q0)
 print('- - - - - -')
@@ -311,7 +313,7 @@ for q in successors(q2, NQUEEN):
 ```python
 def solution3(nqueen):
     solns = []
-    complete = pow(2, nqueen) - 1
+    complete = (1 << nqueen) - 1
     queue = [q for q in successors(Queens(0, 0, 0, ()), nqueen)]
     while queue:
         q = queue.pop()       
@@ -336,16 +338,16 @@ n, y = zip(*time3)
 pred3 = expfit(n, y)
 ```
 
-    exp(a): 4.492428
-    b: -16.631245959097228
-     6: 0.000649  pred: 0.000492
-     7: 0.002254  pred: 0.002211
-     8: 0.008735  pred: 0.009931
-     9: 0.038000  pred: 0.044614
-    10: 0.166367  pred: 0.200425
-    11: 0.794567  pred: 0.900397
-    12: 4.221937  pred: 4.044969
-    13: 23.607198  pred: 18.171731
+    exp(a): 4.472685
+    b: -16.57373394920169
+     6: 0.000669  pred: 0.000508
+     7: 0.002338  pred: 0.002270
+     8: 0.008912  pred: 0.010155
+     9: 0.038631  pred: 0.045419
+    10: 0.168129  pred: 0.203143
+    11: 0.789090  pred: 0.908594
+    12: 4.215943  pred: 4.063855
+    13: 24.044861  pred: 18.176343
 
 
 #### b. Just count the number of solutions
@@ -367,7 +369,7 @@ def successors2(state, nqueen):
         
 def solution3b(nqueen):
     count = 0
-    complete = pow(2, nqueen) - 1
+    complete = (1 << nqueen) - 1
     queue = [q for q in successors2(Queens2(0, 0, 0), nqueen)]
     while queue:
         q = queue.pop()       
@@ -389,33 +391,19 @@ print("Found {} solutions".format(nsolns))
 ```python
 time3b = timings(solution3b)
 n, y = zip(*time3b)
-expfit(n, y)
+pred3b = expfit(n, y)
 ```
 
-    exp(a): 4.517612
-    b: -16.761267086815444
-     6: 0.000576  pred: 0.000447
-     7: 0.001985  pred: 0.002019
-     8: 0.008686  pred: 0.009119
-     9: 0.036272  pred: 0.041196
-    10: 0.148847  pred: 0.186107
-    11: 0.722061  pred: 0.840761
-    12: 4.014271  pred: 3.798233
-    13: 22.249151  pred: 17.158946
-
-
-
-
-
-    [(6, 0.0005755180027335882, 0.0004468151814363395),
-     (7, 0.0019850459648296237, 0.0020185377464546103),
-     (8, 0.008686258108355105, 0.009118970892537997),
-     (9, 0.03627238096669316, 0.04119597480156664),
-     (10, 0.14884748705662787, 0.18610744127279155),
-     (11, 0.7220614129910246, 0.8407612603886834),
-     (12, 4.014271337073296, 3.7982333867792075),
-     (13, 22.24915105907712, 17.15894575562967)]
-
+    exp(a): 4.470358
+    b: -16.598125842041316
+     6: 0.000649  pred: 0.000494
+     7: 0.002319  pred: 0.002208
+     8: 0.008206  pred: 0.009869
+     9: 0.039181  pred: 0.044117
+    10: 0.158368  pred: 0.197219
+    11: 0.786077  pred: 0.881639
+    12: 4.245627  pred: 3.941242
+    13: 22.398824  pred: 17.618762
 
 
 #### c. Replace namedtuples with simple tuples
@@ -456,17 +444,17 @@ n, y = zip(*time3c)
 pred3c = expfit(n, y)
 ```
 
-    exp(a): 4.712238
-    b: -17.563875686708332
-     6: 0.000354  pred: 0.000258
-     7: 0.001322  pred: 0.001215
-     8: 0.005022  pred: 0.005727
-     9: 0.021716  pred: 0.026987
-    10: 0.101157  pred: 0.127168
-    11: 0.580952  pred: 0.599246
-    12: 2.452625  pred: 2.823788
-    13: 13.912637  pred: 13.306360
-    14: 85.006437  pred: 62.702731
+    exp(a): 4.654886
+    b: -17.44134934692532
+     6: 0.000386  pred: 0.000271
+     7: 0.001397  pred: 0.001261
+     8: 0.005034  pred: 0.005869
+     9: 0.024744  pred: 0.027321
+    10: 0.091425  pred: 0.127177
+    11: 0.477020  pred: 0.591995
+    12: 2.436652  pred: 2.755668
+    13: 13.975180  pred: 12.827320
+    14: 87.310678  pred: 59.709713
 
 
 ### 4. Replace iterative search with a recursive search
@@ -508,17 +496,17 @@ n, y = zip(*time4)
 pred4 = expfit(n, y)
 ```
 
-    exp(a): 4.721219
-    b: -18.069168028834724
-     6: 0.000226  pred: 0.000157
-     7: 0.000773  pred: 0.000743
-     8: 0.003179  pred: 0.003508
-     9: 0.014298  pred: 0.016563
-    10: 0.060618  pred: 0.078199
-    11: 0.291841  pred: 0.369195
-    12: 1.568045  pred: 1.743048
-    13: 9.019769  pred: 8.229313
-    14: 55.034934  pred: 38.852386
+    exp(a): 4.749389
+    b: -18.10717767707088
+     6: 0.000224  pred: 0.000157
+     7: 0.000786  pred: 0.000746
+     8: 0.003206  pred: 0.003542
+     9: 0.013826  pred: 0.016823
+    10: 0.062648  pred: 0.079897
+    11: 0.317552  pred: 0.379461
+    12: 1.623624  pred: 1.802209
+    13: 9.273949  pred: 8.559392
+    14: 56.707587  pred: 40.651879
 
 
 ### Plot timings for the different solutions
@@ -531,7 +519,7 @@ plot_timings(('soln1', pred1), ('soln2', pred2), ('soln2b', pred2b), ('soln3', p
 
 
 <div class="bk-root">
-    <div class="bk-plotdiv" id="c626b78d-3f69-4f3d-9258-b493fec77ed7"></div>
+    <div class="bk-plotdiv" id="17750240-daee-4c0a-8ec9-d70e47b60487"></div>
 </div>
 
 

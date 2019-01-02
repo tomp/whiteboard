@@ -11803,15 +11803,17 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">timeit</span>
     
 <span class="k">def</span> <span class="nf">print_solutions</span><span class="p">(</span><span class="n">solns</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">solns</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:2d}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">b</span><span class="p">))))</span>
 
-<span class="k">def</span> <span class="nf">timings</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">maxtime</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">nrun</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">timings</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">maxtime</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">nrun</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">n</span><span class="p">,</span> <span class="n">dt</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">dt</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">0.001</span>
     <span class="k">while</span> <span class="n">dt</span> <span class="o">&lt;</span> <span class="n">maxtime</span><span class="p">:</span>
+        <span class="n">nrun</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span><span class="o">/</span><span class="n">dt</span><span class="p">))</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;fn(n)&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="n">nrun</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">locals</span><span class="p">())</span> <span class="o">/</span> <span class="n">nrun</span>
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="p">))</span>
         <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>              
@@ -11879,7 +11881,7 @@ div#notebook {
 
     <div class="bk-root">
         <a href="https://bokeh.pydata.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
-        <span id="948e2222-71d8-4505-b918-8d9c5050a689">Loading BokehJS ...</span>
+        <span id="76c5978e-eb05-4d8b-adb9-f57811cca537">Loading BokehJS ...</span>
     </div>
 </div>
 
@@ -11893,10 +11895,10 @@ div#notebook {
 
 
 
-<div id="3dd2d2bd-d16a-45a2-a509-8a704319bdc2"></div>
+<div id="e89cdb3e-7941-4f55-b921-cdb472bcb855"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#3dd2d2bd-d16a-45a2-a509-8a704319bdc2');
+var element = $('#e89cdb3e-7941-4f55-b921-cdb472bcb855');
 
 (function(root) {
   function now() {
@@ -12054,7 +12056,7 @@ var element = $('#3dd2d2bd-d16a-45a2-a509-8a704319bdc2');
      "</div>"}};
 
   function display_loaded() {
-    var el = document.getElementById("948e2222-71d8-4505-b918-8d9c5050a689");
+    var el = document.getElementById("76c5978e-eb05-4d8b-adb9-f57811cca537");
     if (el != null) {
       el.textContent = "BokehJS is loading...";
     }
@@ -12108,9 +12110,9 @@ var element = $('#3dd2d2bd-d16a-45a2-a509-8a704319bdc2');
       console.log("Bokeh: injecting script tag for BokehJS library: ", url);
       document.getElementsByTagName("head")[0].appendChild(s);
     }
-  };var element = document.getElementById("948e2222-71d8-4505-b918-8d9c5050a689");
+  };var element = document.getElementById("76c5978e-eb05-4d8b-adb9-f57811cca537");
   if (element == null) {
-    console.log("Bokeh: ERROR: autoload.js configured with elementid '948e2222-71d8-4505-b918-8d9c5050a689' but no matching script tag was found. ")
+    console.log("Bokeh: ERROR: autoload.js configured with elementid '76c5978e-eb05-4d8b-adb9-f57811cca537' but no matching script tag was found. ")
     return false;
   }
 
@@ -12147,7 +12149,7 @@ var element = $('#3dd2d2bd-d16a-45a2-a509-8a704319bdc2');
       console.log("Bokeh: BokehJS failed to load within specified timeout.");
       root._bokeh_failed_load = true;
     } else if (force !== true) {
-      var cell = $(document.getElementById("948e2222-71d8-4505-b918-8d9c5050a689")).parents('.cell').data().cell;
+      var cell = $(document.getElementById("76c5978e-eb05-4d8b-adb9-f57811cca537")).parents('.cell').data().cell;
       cell.output_area.append_execute_result(NB_LOAD_WARNING)
     }
 
@@ -12176,7 +12178,7 @@ var element = $('#3dd2d2bd-d16a-45a2-a509-8a704319bdc2');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="1.-Consider-all-possible-arrangements-of-the-8-queens-on-distinct-rows-and-columns.">1. Consider all possible arrangements of the 8 queens on distinct rows and columns.<a class="anchor-link" href="#1.-Consider-all-possible-arrangements-of-the-8-queens-on-distinct-rows-and-columns.">&#182;</a></h3>
+<h3 id="1.-Consider-all-possible-arrangements-of-the-N-queens-on-distinct-rows-and-columns.">1. Consider all possible arrangements of the N queens on distinct rows and columns.<a class="anchor-link" href="#1.-Consider-all-possible-arrangements-of-the-N-queens-on-distinct-rows-and-columns.">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -12198,8 +12200,7 @@ var element = $('#3dd2d2bd-d16a-45a2-a509-8a704319bdc2');
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">timeit</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">permutations</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">permutations</span>
 
 <span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return True if any two queens on the given board attack each other.&quot;&quot;&quot;</span>
@@ -12246,7 +12247,7 @@ var element = $('#3dd2d2bd-d16a-45a2-a509-8a704319bdc2');
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">time1</span> <span class="o">=</span> <span class="n">timings</span><span class="p">(</span><span class="n">solution1</span><span class="p">)</span>
@@ -12268,14 +12269,14 @@ var element = $('#3dd2d2bd-d16a-45a2-a509-8a704319bdc2');
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>exp(a): 9.149036
-b: -19.683358688872186
- 6: 0.002185  pred: 0.001659
- 7: 0.013701  pred: 0.015179
- 8: 0.111955  pred: 0.138876
- 9: 1.089616  pred: 1.270585
-10: 11.465833  pred: 11.624630
-11: 131.192340  pred: 106.354154
+<pre>exp(a): 9.521513
+b: -20.04513039053966
+ 6: 0.001820  pred: 0.001468
+ 7: 0.013404  pred: 0.013978
+ 8: 0.110075  pred: 0.133094
+ 9: 1.078596  pred: 1.267255
+10: 11.899116  pred: 12.066183
+11: 139.236723  pred: 114.888314
 </pre>
 </div>
 </div>
@@ -12302,7 +12303,7 @@ b: -19.683358688872186
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">solution2</span><span class="p">(</span><span class="n">nqueen</span><span class="p">):</span>
@@ -12348,7 +12349,7 @@ b: -19.683358688872186
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">time2</span> <span class="o">=</span> <span class="n">timings</span><span class="p">(</span><span class="n">solution2</span><span class="p">)</span>
@@ -12370,15 +12371,15 @@ b: -19.683358688872186
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>exp(a): 5.278673
-b: -16.625263718561403
- 6: 0.001448  pred: 0.001303
- 7: 0.007182  pred: 0.006877
- 8: 0.033885  pred: 0.036303
- 9: 0.170547  pred: 0.191630
-10: 0.911772  pred: 1.011550
-11: 5.250576  pred: 5.339643
-12: 32.986274  pred: 28.186233
+<pre>exp(a): 5.243480
+b: -16.55145491075078
+ 6: 0.001526  pred: 0.001347
+ 7: 0.007787  pred: 0.007065
+ 8: 0.032386  pred: 0.037047
+ 9: 0.163617  pred: 0.194254
+10: 0.930854  pred: 1.018569
+11: 5.345769  pred: 5.340844
+12: 33.316671  pred: 28.004604
 </pre>
 </div>
 </div>
@@ -12397,7 +12398,7 @@ b: -16.625263718561403
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">adds_attack</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
@@ -12451,7 +12452,7 @@ b: -16.625263718561403
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">time2b</span> <span class="o">=</span> <span class="n">timings</span><span class="p">(</span><span class="n">solution2b</span><span class="p">)</span>
@@ -12473,16 +12474,16 @@ b: -16.625263718561403
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>exp(a): 4.905262
-b: -16.721051843460007
- 6: 0.000896  pred: 0.000762
- 7: 0.003798  pred: 0.003739
- 8: 0.016835  pred: 0.018342
- 9: 0.084330  pred: 0.089970
-10: 0.406006  pred: 0.441328
-11: 1.876752  pred: 2.164829
-12: 10.625082  pred: 10.619054
-13: 63.569585  pred: 52.089241
+<pre>exp(a): 4.854287
+b: -16.648432405440953
+ 6: 0.001088  pred: 0.000770
+ 7: 0.003651  pred: 0.003737
+ 8: 0.015542  pred: 0.018142
+ 9: 0.075160  pred: 0.088066
+10: 0.339158  pred: 0.427496
+11: 1.858727  pred: 2.075189
+12: 10.469381  pred: 10.073561
+13: 65.571665  pred: 48.899954
 </pre>
 </div>
 </div>
@@ -12502,21 +12503,18 @@ b: -16.721051843460007
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">islice</span>
 
 <span class="k">def</span> <span class="nf">bits</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="n">NQUEEN</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a string containing the nbits-binary representation of the integer i.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bin</span><span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">nbits</span><span class="p">)</span> <span class="o">|</span> <span class="n">i</span><span class="p">)[</span><span class="mi">3</span><span class="p">:]</span>
 
 <span class="n">Queens</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Queens&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="s1">&#39;rd&#39;</span><span class="p">,</span> <span class="s1">&#39;ld&#39;</span><span class="p">,</span> <span class="s1">&#39;loc&#39;</span><span class="p">])</span>
 <span class="n">Queens</span><span class="o">.</span><span class="fm">__repr__</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">q</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bits</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">col</span><span class="p">),</span> <span class="n">bits</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">rd</span><span class="p">),</span> <span class="n">bits</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">ld</span><span class="p">),</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">q</span><span class="o">.</span><span class="n">loc</span><span class="p">)))</span>
-
-<span class="k">def</span> <span class="nf">new_queens</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>
-    <span class="n">newq</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">col</span>
-    <span class="k">return</span> <span class="n">Queens</span><span class="p">(</span><span class="n">newq</span><span class="p">,</span> <span class="n">newq</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">newq</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,))</span>
 
 <span class="k">def</span> <span class="nf">successors</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">nqueen</span><span class="p">):</span>
     <span class="n">col</span> <span class="o">=</span> <span class="n">nqueen</span> <span class="o">-</span> <span class="mi">1</span>
@@ -12524,10 +12522,22 @@ b: -16.721051843460007
     <span class="n">excl</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">col</span> <span class="o">|</span> <span class="n">state</span><span class="o">.</span><span class="n">ld</span> <span class="o">|</span> <span class="n">state</span><span class="o">.</span><span class="n">rd</span>
     <span class="k">while</span> <span class="n">newq</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">newq</span> <span class="o">&amp;</span> <span class="n">excl</span><span class="p">):</span>
-            <span class="k">yield</span> <span class="n">Queens</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">col</span> <span class="o">|</span> <span class="n">newq</span><span class="p">,</span> <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">rd</span> <span class="o">|</span> <span class="n">newq</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">ld</span> <span class="o">|</span> <span class="n">newq</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">loc</span> <span class="o">+</span> <span class="p">(</span><span class="n">col</span><span class="p">,))</span>
+            <span class="k">yield</span> <span class="n">Queens</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">col</span> <span class="o">|</span> <span class="n">newq</span><span class="p">,(</span><span class="n">state</span><span class="o">.</span><span class="n">rd</span> <span class="o">|</span> <span class="n">newq</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">ld</span> <span class="o">|</span> <span class="n">newq</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">loc</span> <span class="o">+</span> <span class="p">(</span><span class="n">col</span><span class="p">,))</span>
         <span class="n">col</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="n">newq</span> <span class="o">=</span> <span class="n">newq</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>
-        
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Verify that successors() works the way we expect it to.</span>
 <span class="n">q0</span> <span class="o">=</span> <span class="n">Queens</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">q0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- - - - - -&#39;</span><span class="p">)</span>
@@ -12610,12 +12620,12 @@ b: -16.721051843460007
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">solution3</span><span class="p">(</span><span class="n">nqueen</span><span class="p">):</span>
     <span class="n">solns</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">complete</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">nqueen</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">complete</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">nqueen</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">successors</span><span class="p">(</span><span class="n">Queens</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">()),</span> <span class="n">nqueen</span><span class="p">)]</span>
     <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
         <span class="n">q</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>       
@@ -12655,7 +12665,7 @@ b: -16.721051843460007
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">time3</span> <span class="o">=</span> <span class="n">timings</span><span class="p">(</span><span class="n">solution3</span><span class="p">)</span>
@@ -12677,16 +12687,16 @@ b: -16.721051843460007
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>exp(a): 4.492428
-b: -16.631245959097228
- 6: 0.000649  pred: 0.000492
- 7: 0.002254  pred: 0.002211
- 8: 0.008735  pred: 0.009931
- 9: 0.038000  pred: 0.044614
-10: 0.166367  pred: 0.200425
-11: 0.794567  pred: 0.900397
-12: 4.221937  pred: 4.044969
-13: 23.607198  pred: 18.171731
+<pre>exp(a): 4.472685
+b: -16.57373394920169
+ 6: 0.000669  pred: 0.000508
+ 7: 0.002338  pred: 0.002270
+ 8: 0.008912  pred: 0.010155
+ 9: 0.038631  pred: 0.045419
+10: 0.168129  pred: 0.203143
+11: 0.789090  pred: 0.908594
+12: 4.215943  pred: 4.063855
+13: 24.044861  pred: 18.176343
 </pre>
 </div>
 </div>
@@ -12705,7 +12715,7 @@ b: -16.631245959097228
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Queens2</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Queens&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="s1">&#39;rd&#39;</span><span class="p">,</span> <span class="s1">&#39;ld&#39;</span><span class="p">])</span>
@@ -12723,7 +12733,7 @@ b: -16.631245959097228
         
 <span class="k">def</span> <span class="nf">solution3b</span><span class="p">(</span><span class="n">nqueen</span><span class="p">):</span>
     <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">complete</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">nqueen</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">complete</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">nqueen</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">successors2</span><span class="p">(</span><span class="n">Queens2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">nqueen</span><span class="p">)]</span>
     <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
         <span class="n">q</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>       
@@ -12763,12 +12773,12 @@ b: -16.631245959097228
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">time3b</span> <span class="o">=</span> <span class="n">timings</span><span class="p">(</span><span class="n">solution3b</span><span class="p">)</span>
 <span class="n">n</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">time3b</span><span class="p">)</span>
-<span class="n">expfit</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">pred3b</span> <span class="o">=</span> <span class="n">expfit</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12785,38 +12795,18 @@ b: -16.631245959097228
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>exp(a): 4.517612
-b: -16.761267086815444
- 6: 0.000576  pred: 0.000447
- 7: 0.001985  pred: 0.002019
- 8: 0.008686  pred: 0.009119
- 9: 0.036272  pred: 0.041196
-10: 0.148847  pred: 0.186107
-11: 0.722061  pred: 0.840761
-12: 4.014271  pred: 3.798233
-13: 22.249151  pred: 17.158946
+<pre>exp(a): 4.470358
+b: -16.598125842041316
+ 6: 0.000649  pred: 0.000494
+ 7: 0.002319  pred: 0.002208
+ 8: 0.008206  pred: 0.009869
+ 9: 0.039181  pred: 0.044117
+10: 0.158368  pred: 0.197219
+11: 0.786077  pred: 0.881639
+12: 4.245627  pred: 3.941242
+13: 22.398824  pred: 17.618762
 </pre>
 </div>
-</div>
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[13]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[(6, 0.0005755180027335882, 0.0004468151814363395),
- (7, 0.0019850459648296237, 0.0020185377464546103),
- (8, 0.008686258108355105, 0.009118970892537997),
- (9, 0.03627238096669316, 0.04119597480156664),
- (10, 0.14884748705662787, 0.18610744127279155),
- (11, 0.7220614129910246, 0.8407612603886834),
- (12, 4.014271337073296, 3.7982333867792075),
- (13, 22.24915105907712, 17.15894575562967)]</pre>
-</div>
-
 </div>
 
 </div>
@@ -12833,7 +12823,7 @@ b: -16.761267086815444
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">successors3</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">rd</span><span class="p">,</span> <span class="n">ld</span><span class="p">,</span> <span class="n">nqueen</span><span class="p">):</span>
@@ -12885,7 +12875,7 @@ b: -16.761267086815444
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">time3c</span> <span class="o">=</span> <span class="n">timings</span><span class="p">(</span><span class="n">solution3c</span><span class="p">)</span>
@@ -12907,17 +12897,17 @@ b: -16.761267086815444
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>exp(a): 4.712238
-b: -17.563875686708332
- 6: 0.000354  pred: 0.000258
- 7: 0.001322  pred: 0.001215
- 8: 0.005022  pred: 0.005727
- 9: 0.021716  pred: 0.026987
-10: 0.101157  pred: 0.127168
-11: 0.580952  pred: 0.599246
-12: 2.452625  pred: 2.823788
-13: 13.912637  pred: 13.306360
-14: 85.006437  pred: 62.702731
+<pre>exp(a): 4.654886
+b: -17.44134934692532
+ 6: 0.000386  pred: 0.000271
+ 7: 0.001397  pred: 0.001261
+ 8: 0.005034  pred: 0.005869
+ 9: 0.024744  pred: 0.027321
+10: 0.091425  pred: 0.127177
+11: 0.477020  pred: 0.591995
+12: 2.436652  pred: 2.755668
+13: 13.975180  pred: 12.827320
+14: 87.310678  pred: 59.709713
 </pre>
 </div>
 </div>
@@ -12936,7 +12926,7 @@ b: -17.563875686708332
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">solution4</span><span class="p">(</span><span class="n">nqueen</span><span class="p">):</span>
@@ -12989,7 +12979,7 @@ b: -17.563875686708332
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">time4</span> <span class="o">=</span> <span class="n">timings</span><span class="p">(</span><span class="n">solution4</span><span class="p">)</span>
@@ -13011,17 +13001,17 @@ b: -17.563875686708332
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>exp(a): 4.721219
-b: -18.069168028834724
- 6: 0.000226  pred: 0.000157
- 7: 0.000773  pred: 0.000743
- 8: 0.003179  pred: 0.003508
- 9: 0.014298  pred: 0.016563
-10: 0.060618  pred: 0.078199
-11: 0.291841  pred: 0.369195
-12: 1.568045  pred: 1.743048
-13: 9.019769  pred: 8.229313
-14: 55.034934  pred: 38.852386
+<pre>exp(a): 4.749389
+b: -18.10717767707088
+ 6: 0.000224  pred: 0.000157
+ 7: 0.000786  pred: 0.000746
+ 8: 0.003206  pred: 0.003542
+ 9: 0.013826  pred: 0.016823
+10: 0.062648  pred: 0.079897
+11: 0.317552  pred: 0.379461
+12: 1.623624  pred: 1.802209
+13: 9.273949  pred: 8.559392
+14: 56.707587  pred: 40.651879
 </pre>
 </div>
 </div>
@@ -13040,7 +13030,7 @@ b: -18.069168028834724
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_timings</span><span class="p">((</span><span class="s1">&#39;soln1&#39;</span><span class="p">,</span> <span class="n">pred1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;soln2&#39;</span><span class="p">,</span> <span class="n">pred2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;soln2b&#39;</span><span class="p">,</span> <span class="n">pred2b</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;soln3&#39;</span><span class="p">,</span> <span class="n">pred3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;soln3c&#39;</span><span class="p">,</span> <span class="n">pred3c</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;soln4&#39;</span><span class="p">,</span> <span class="n">pred4</span><span class="p">))</span>
@@ -13063,7 +13053,7 @@ b: -18.069168028834724
 <div class="output_html rendered_html output_subarea ">
 
 <div class="bk-root">
-    <div class="bk-plotdiv" id="c626b78d-3f69-4f3d-9258-b493fec77ed7"></div>
+    <div class="bk-plotdiv" id="17750240-daee-4c0a-8ec9-d70e47b60487"></div>
 </div>
 </div>
 
@@ -13077,15 +13067,15 @@ b: -18.069168028834724
 
 
 
-<div id="8e73271f-f9f0-41c3-9568-41d1c4ed8082"></div>
+<div id="903bc65d-e6a0-4a0c-aefc-eb2f51c38df8"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#8e73271f-f9f0-41c3-9568-41d1c4ed8082');
+var element = $('#903bc65d-e6a0-4a0c-aefc-eb2f51c38df8');
 (function(root) {
   function embed_document(root) {
     
-  var docs_json = {"8d9ec970-2449-4fa5-b31c-e447e98d8778":{"roots":{"references":[{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"7cafa0d8-21f1-4300-ad57-2f60852db02a","type":"Line"},{"attributes":{"label":{"value":"soln2 (pred)"},"renderers":[{"id":"ee72ef9c-03f5-4a68-b805-6746aacaa91c","type":"GlyphRenderer"}]},"id":"84435b37-8ad0-492d-b3fe-9b9b53091064","type":"LegendItem"},{"attributes":{"line_color":"#2ca02c","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"ea5707c5-5354-42c0-995e-53a3159dfc56","type":"Line"},{"attributes":{"dimension":1,"plot":{"id":"62a14c3e-b405-4db2-9d24-0f67b2d012fd","subtype":"Figure","type":"Plot"},"ticker":{"id":"8592c4df-c868-42ed-a89f-8f464978abf9","type":"LogTicker"}},"id":"eb53f5f2-656c-422d-9b6b-80dfec2a0872","type":"Grid"},{"attributes":{"source":{"id":"5a4cd82c-aadd-4573-bb8e-de5764ea38a7","type":"ColumnDataSource"}},"id":"d660d39b-04b3-4dac-bcc6-e148be596b54","type":"CDSView"},{"attributes":{"axis_label":"N","formatter":{"id":"03cef8d5-e1f7-437f-8b0a-cb7eafc3a2c5","type":"BasicTickFormatter"},"plot":{"id":"62a14c3e-b405-4db2-9d24-0f67b2d012fd","subtype":"Figure","type":"Plot"},"ticker":{"id":"f979b68d-ae15-4144-88cc-211fd8b3032d","type":"BasicTicker"}},"id":"95e3ecf6-6b84-4acf-b0e4-ef3d8251b41c","type":"LinearAxis"},{"attributes":{"source":{"id":"a6966580-9da1-4e38-998a-438e14b9ed00","type":"ColumnDataSource"}},"id":"4804e6ac-1216-40aa-9f3f-ac677244dd52","type":"CDSView"},{"attributes":{},"id":"2ffee2b7-54b3-4002-bee4-257fd1968043","type":"SaveTool"},{"attributes":{},"id":"4025f1e4-da32-4df7-af01-66991ca5bd56","type":"HelpTool"},{"attributes":{"source":{"id":"35686b51-994e-42db-b375-4ef588394a67","type":"ColumnDataSource"}},"id":"2ee15f3f-a75d-4146-9ced-446339fbec46","type":"CDSView"},{"attributes":{"line_color":"#ffbb78","x":{"field":"x"},"y":{"field":"y"}},"id":"e62bc285-b311-47e2-afec-aff6fa1bba2f","type":"Line"},{"attributes":{"below":[{"id":"95e3ecf6-6b84-4acf-b0e4-ef3d8251b41c","type":"LinearAxis"}],"left":[{"id":"d4909e00-727f-4d69-92cc-f5c7feab029c","type":"LogAxis"}],"renderers":[{"id":"95e3ecf6-6b84-4acf-b0e4-ef3d8251b41c","type":"LinearAxis"},{"id":"a1347b5d-a0a1-4c25-84e2-a90b9b4dc4e7","type":"Grid"},{"id":"d4909e00-727f-4d69-92cc-f5c7feab029c","type":"LogAxis"},{"id":"eb53f5f2-656c-422d-9b6b-80dfec2a0872","type":"Grid"},{"id":"7a906c4b-04ad-4968-b1e1-2b5188924946","type":"BoxAnnotation"},{"id":"a5a319d7-e458-4578-a276-6cdfe55be639","type":"Legend"},{"id":"e4dbe1fe-24c5-4136-8315-f33cb3c7081f","type":"GlyphRenderer"},{"id":"eb8990b7-c916-4d04-b6d1-054838a54285","type":"GlyphRenderer"},{"id":"cb5e2e2e-4f40-4916-bb39-b5228f3b189e","type":"GlyphRenderer"},{"id":"ee72ef9c-03f5-4a68-b805-6746aacaa91c","type":"GlyphRenderer"},{"id":"aa358168-4830-440d-a228-abeabd58124f","type":"GlyphRenderer"},{"id":"5b1a14ba-797f-43fa-9b41-1ed18cb3428d","type":"GlyphRenderer"},{"id":"d5f2332b-798c-4712-b949-90e967d1c60d","type":"GlyphRenderer"},{"id":"d6d29b12-5d41-47ea-80c1-37763ab692c8","type":"GlyphRenderer"},{"id":"5003b11d-f3b8-4bc4-9faa-84de101d24d0","type":"GlyphRenderer"},{"id":"35fec1ab-d168-435f-8e5f-37a695e892b1","type":"GlyphRenderer"},{"id":"2ee9a603-b42e-40b9-a1aa-cd533a5a5259","type":"GlyphRenderer"},{"id":"c5ad1b4e-2db7-4c18-8072-2cc944b1cbea","type":"GlyphRenderer"}],"title":{"id":"15c2f1ae-878d-4d60-8ae7-c2379b687ee0","type":"Title"},"toolbar":{"id":"19b7199b-5cad-448a-918d-f85e3f77ac40","type":"Toolbar"},"x_range":{"id":"c26efa66-1b4c-49b5-9309-38803c461126","type":"DataRange1d"},"x_scale":{"id":"33c603dd-9ade-44f0-aead-39040f506576","type":"LinearScale"},"y_range":{"id":"5039bba7-8c44-477a-8b7f-80c40f5ed45c","type":"DataRange1d"},"y_scale":{"id":"0ae73cf3-bb2b-4a02-be6c-bfbe5b6ebc00","type":"LogScale"}},"id":"62a14c3e-b405-4db2-9d24-0f67b2d012fd","subtype":"Figure","type":"Plot"},{"attributes":{"label":{"value":"soln3"},"renderers":[{"id":"d5f2332b-798c-4712-b949-90e967d1c60d","type":"GlyphRenderer"}]},"id":"779dd333-348f-4620-bcb7-b1337ef01881","type":"LegendItem"},{"attributes":{"label":{"value":"soln2b (pred)"},"renderers":[{"id":"5b1a14ba-797f-43fa-9b41-1ed18cb3428d","type":"GlyphRenderer"}]},"id":"0d4835b4-cc03-4ea0-be70-35dc46d256a5","type":"LegendItem"},{"attributes":{"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"7862c9ad-a538-4ddf-9395-9855cfa5d2a2","type":"Line"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13,14],"y":[0.0001573927581192994,0.0007430856333547205,0.0035082697901491233,0.016563308948536255,0.0781990039919364,0.3691946002052508,1.743048451547666,8.22931294973882,38.85238621141526]}},"id":"5a5490b0-1a2b-4c48-8670-50138572a5a5","type":"ColumnDataSource"},{"attributes":{},"id":"51d87d1e-0f32-42af-a0f2-6dd9f881bd6c","type":"PanTool"},{"attributes":{},"id":"0ae73cf3-bb2b-4a02-be6c-bfbe5b6ebc00","type":"LogScale"},{"attributes":{"ticker":null},"id":"9643c006-98eb-4406-b95c-fa962f9ee825","type":"LogTickFormatter"},{"attributes":{"label":{"value":"soln2b"},"renderers":[{"id":"aa358168-4830-440d-a228-abeabd58124f","type":"GlyphRenderer"}]},"id":"76dd0316-d1fc-47dc-bf9d-7219652e3355","type":"LegendItem"},{"attributes":{"data_source":{"id":"29674322-15eb-425e-a9ce-7af086c742d6","type":"ColumnDataSource"},"glyph":{"id":"7862c9ad-a538-4ddf-9395-9855cfa5d2a2","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"29fe13ec-5782-4e66-bfbe-a87326e85cc4","type":"Line"},"selection_glyph":null,"view":{"id":"09f7a01c-766f-4820-8063-9d0ee2c55512","type":"CDSView"}},"id":"e4dbe1fe-24c5-4136-8315-f33cb3c7081f","type":"GlyphRenderer"},{"attributes":{},"id":"03cef8d5-e1f7-437f-8b0a-cb7eafc3a2c5","type":"BasicTickFormatter"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"62fbc946-d993-43dc-b81a-5379820cfbf3","type":"Line"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13],"y":[0.0008956440724432468,0.0037983449874445796,0.016834946000017226,0.0843295999802649,0.40600611292757094,1.8767515739891678,10.62508240994066,63.5695845449809]}},"id":"a6966580-9da1-4e38-998a-438e14b9ed00","type":"ColumnDataSource"},{"attributes":{"plot":{"id":"62a14c3e-b405-4db2-9d24-0f67b2d012fd","subtype":"Figure","type":"Plot"},"ticker":{"id":"f979b68d-ae15-4144-88cc-211fd8b3032d","type":"BasicTicker"}},"id":"a1347b5d-a0a1-4c25-84e2-a90b9b4dc4e7","type":"Grid"},{"attributes":{"items":[{"id":"be4ffe52-fdea-490a-a9c6-e32115c53e90","type":"LegendItem"},{"id":"29fe5e5b-822e-4d88-8392-8ce4c0d4a3a8","type":"LegendItem"},{"id":"2571cddf-96a6-486b-a07d-ffc88fd6bd1e","type":"LegendItem"},{"id":"84435b37-8ad0-492d-b3fe-9b9b53091064","type":"LegendItem"},{"id":"76dd0316-d1fc-47dc-bf9d-7219652e3355","type":"LegendItem"},{"id":"0d4835b4-cc03-4ea0-be70-35dc46d256a5","type":"LegendItem"},{"id":"779dd333-348f-4620-bcb7-b1337ef01881","type":"LegendItem"},{"id":"1b961507-2388-4e22-bb05-634674afe953","type":"LegendItem"},{"id":"c87a7be0-0e4b-4d25-84cb-97b9cd052304","type":"LegendItem"},{"id":"928da02c-552e-46d7-876f-d0ed4a486285","type":"LegendItem"},{"id":"fe0f1d4b-427b-4095-a8b6-06084b92195e","type":"LegendItem"},{"id":"ce0e353b-b0cc-4915-9bcf-b1e47b76e674","type":"LegendItem"}],"plot":{"id":"62a14c3e-b405-4db2-9d24-0f67b2d012fd","subtype":"Figure","type":"Plot"}},"id":"a5a319d7-e458-4578-a276-6cdfe55be639","type":"Legend"},{"attributes":{"label":{"value":"soln3c (pred)"},"renderers":[{"id":"35fec1ab-d168-435f-8e5f-37a695e892b1","type":"GlyphRenderer"}]},"id":"928da02c-552e-46d7-876f-d0ed4a486285","type":"LegendItem"},{"attributes":{"data_source":{"id":"abf925b2-e789-4551-9602-1663dd3a55b4","type":"ColumnDataSource"},"glyph":{"id":"77a90455-c066-4700-a8b6-0b38ea45d144","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"e63301e9-9d76-458b-8f0d-51f53a29c518","type":"Line"},"selection_glyph":null,"view":{"id":"f85a6d70-3fe7-4005-9177-a660a541ad50","type":"CDSView"}},"id":"cb5e2e2e-4f40-4916-bb39-b5228f3b189e","type":"GlyphRenderer"},{"attributes":{"label":{"value":"soln1"},"renderers":[{"id":"e4dbe1fe-24c5-4136-8315-f33cb3c7081f","type":"GlyphRenderer"}]},"id":"be4ffe52-fdea-490a-a9c6-e32115c53e90","type":"LegendItem"},{"attributes":{"label":{"value":"soln2"},"renderers":[{"id":"cb5e2e2e-4f40-4916-bb39-b5228f3b189e","type":"GlyphRenderer"}]},"id":"2571cddf-96a6-486b-a07d-ffc88fd6bd1e","type":"LegendItem"},{"attributes":{"line_color":"#d62728","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"447120f8-51ec-40ff-ac24-4b9b91c4e3f6","type":"Line"},{"attributes":{"source":{"id":"08152206-d615-4b5d-866a-6b779ab42184","type":"ColumnDataSource"}},"id":"a8c756cd-55da-4018-a990-8a94fbe4e344","type":"CDSView"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13],"y":[0.0004920717215569737,0.00221059678195992,0.009930946889102545,0.04461406391206972,0.2004254700963476,0.9003969946004953,4.044968673372109,18.17173054406008]}},"id":"02499b63-6aaa-400f-a4b4-fc13ff965763","type":"ColumnDataSource"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"1119fd2b-025f-4ad0-b7df-2a72933b57aa","type":"Line"},{"attributes":{"axis_label":"time (sec)","formatter":{"id":"9643c006-98eb-4406-b95c-fa962f9ee825","type":"LogTickFormatter"},"plot":{"id":"62a14c3e-b405-4db2-9d24-0f67b2d012fd","subtype":"Figure","type":"Plot"},"ticker":{"id":"8592c4df-c868-42ed-a89f-8f464978abf9","type":"LogTicker"}},"id":"d4909e00-727f-4d69-92cc-f5c7feab029c","type":"LogAxis"},{"attributes":{},"id":"f979b68d-ae15-4144-88cc-211fd8b3032d","type":"BasicTicker"},{"attributes":{"line_color":"#ff7f0e","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"77a90455-c066-4700-a8b6-0b38ea45d144","type":"Line"},{"attributes":{"callback":null},"id":"c26efa66-1b4c-49b5-9309-38803c461126","type":"DataRange1d"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"338b8de4-c4ba-4cc9-8fd5-0192a07d37aa","type":"Line"},{"attributes":{"label":{"value":"soln4 (pred)"},"renderers":[{"id":"c5ad1b4e-2db7-4c18-8072-2cc944b1cbea","type":"GlyphRenderer"}]},"id":"ce0e353b-b0cc-4915-9bcf-b1e47b76e674","type":"LegendItem"},{"attributes":{"source":{"id":"29674322-15eb-425e-a9ce-7af086c742d6","type":"ColumnDataSource"}},"id":"09f7a01c-766f-4820-8063-9d0ee2c55512","type":"CDSView"},{"attributes":{"line_color":"#c49c94","x":{"field":"x"},"y":{"field":"y"}},"id":"4c5254fc-84b8-4301-8ea8-c39d7f738579","type":"Line"},{"attributes":{"line_color":"#ff9896","x":{"field":"x"},"y":{"field":"y"}},"id":"629d2121-3e1d-44b6-a136-126a792c80e7","type":"Line"},{"attributes":{"source":{"id":"abf925b2-e789-4551-9602-1663dd3a55b4","type":"ColumnDataSource"}},"id":"f85a6d70-3fe7-4005-9177-a660a541ad50","type":"CDSView"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"29fe13ec-5782-4e66-bfbe-a87326e85cc4","type":"Line"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13],"y":[0.0006485430058091879,0.00225394603330642,0.008735356037504971,0.03799991693813354,0.1663666949607432,0.7945673218928277,4.221936617046595,23.607197558972985]}},"id":"08152206-d615-4b5d-866a-6b779ab42184","type":"ColumnDataSource"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11],"y":[0.0021853770595043898,0.013700640993192792,0.111954623949714,1.089616172015667,11.465833235997707,131.1923401519889]}},"id":"29674322-15eb-425e-a9ce-7af086c742d6","type":"ColumnDataSource"},{"attributes":{"line_color":"#9467bd","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"c67fa676-02db-42b0-aa0d-76db10925468","type":"Line"},{"attributes":{"data_source":{"id":"5a5490b0-1a2b-4c48-8670-50138572a5a5","type":"ColumnDataSource"},"glyph":{"id":"4c5254fc-84b8-4301-8ea8-c39d7f738579","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"01df0ab9-2c74-4e71-a1fc-4f4413e45578","type":"Line"},"selection_glyph":null,"view":{"id":"63b18fe2-04c3-4f88-9c08-4ca2747dddb3","type":"CDSView"}},"id":"c5ad1b4e-2db7-4c18-8072-2cc944b1cbea","type":"GlyphRenderer"},{"attributes":{"num_minor_ticks":10},"id":"8592c4df-c868-42ed-a89f-8f464978abf9","type":"LogTicker"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"168efc44-94b4-417f-a231-18f962925cd1","type":"Line"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"e63301e9-9d76-458b-8f0d-51f53a29c518","type":"Line"},{"attributes":{"source":{"id":"02499b63-6aaa-400f-a4b4-fc13ff965763","type":"ColumnDataSource"}},"id":"5b98b6ff-d952-42bd-bbd5-c2b3b59d5374","type":"CDSView"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12],"y":[0.0014477099757641554,0.0071824860060587525,0.03388535405974835,0.1705469370353967,0.9117724309908226,5.250575556070544,32.98627435299568]}},"id":"abf925b2-e789-4551-9602-1663dd3a55b4","type":"ColumnDataSource"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"c9f3d6ea-0098-4cce-b00a-42d3a5cec7af","type":"Line"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_scroll":"auto","active_tap":"auto","tools":[{"id":"51d87d1e-0f32-42af-a0f2-6dd9f881bd6c","type":"PanTool"},{"id":"f0cc0940-1102-441b-898a-1e7957623cc8","type":"WheelZoomTool"},{"id":"5055f91e-71de-4b25-9ae2-7d31e095658b","type":"BoxZoomTool"},{"id":"2ffee2b7-54b3-4002-bee4-257fd1968043","type":"SaveTool"},{"id":"dde8b600-64d1-4622-a883-376e085edf9b","type":"ResetTool"},{"id":"4025f1e4-da32-4df7-af01-66991ca5bd56","type":"HelpTool"}]},"id":"19b7199b-5cad-448a-918d-f85e3f77ac40","type":"Toolbar"},{"attributes":{"callback":null},"id":"5039bba7-8c44-477a-8b7f-80c40f5ed45c","type":"DataRange1d"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13],"y":[0.0007622766926142604,0.0037391668003483917,0.018341592359170697,0.08997031377114388,0.4413279502436874,2.1648291697829283,10.619053997725038,52.08924074960946]}},"id":"6c5dd5a3-6ef5-4f5d-ac64-34e311b81b95","type":"ColumnDataSource"},{"attributes":{},"id":"33c603dd-9ade-44f0-aead-39040f506576","type":"LinearScale"},{"attributes":{"data_source":{"id":"5a4cd82c-aadd-4573-bb8e-de5764ea38a7","type":"ColumnDataSource"},"glyph":{"id":"5a124a8c-0886-457a-8c67-1118616d67e8","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"7cafa0d8-21f1-4300-ad57-2f60852db02a","type":"Line"},"selection_glyph":null,"view":{"id":"d660d39b-04b3-4dac-bcc6-e148be596b54","type":"CDSView"}},"id":"eb8990b7-c916-4d04-b6d1-054838a54285","type":"GlyphRenderer"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13,14],"y":[0.00025791041856828786,0.0012153352166477279,0.005726948515781269,0.026986743124975995,0.12716795034678,0.5992456192475611,2.8237878428343084,13.306359738350745,62.70273099153328]}},"id":"35686b51-994e-42db-b375-4ef588394a67","type":"ColumnDataSource"},{"attributes":{"data_source":{"id":"35686b51-994e-42db-b375-4ef588394a67","type":"ColumnDataSource"},"glyph":{"id":"1ed82d29-0fd1-48eb-80ca-728f2138e676","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"168efc44-94b4-417f-a231-18f962925cd1","type":"Line"},"selection_glyph":null,"view":{"id":"2ee15f3f-a75d-4146-9ced-446339fbec46","type":"CDSView"}},"id":"35fec1ab-d168-435f-8e5f-37a695e892b1","type":"GlyphRenderer"},{"attributes":{"plot":null,"text":"Timings"},"id":"15c2f1ae-878d-4d60-8ae7-c2379b687ee0","type":"Title"},{"attributes":{"line_color":"#aec7e8","x":{"field":"x"},"y":{"field":"y"}},"id":"5a124a8c-0886-457a-8c67-1118616d67e8","type":"Line"},{"attributes":{"data_source":{"id":"08152206-d615-4b5d-866a-6b779ab42184","type":"ColumnDataSource"},"glyph":{"id":"447120f8-51ec-40ff-ac24-4b9b91c4e3f6","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"39a08a97-3a1e-4e24-b350-aec0d8eb683b","type":"Line"},"selection_glyph":null,"view":{"id":"a8c756cd-55da-4018-a990-8a94fbe4e344","type":"CDSView"}},"id":"d5f2332b-798c-4712-b949-90e967d1c60d","type":"GlyphRenderer"},{"attributes":{},"id":"f0cc0940-1102-441b-898a-1e7957623cc8","type":"WheelZoomTool"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"39a08a97-3a1e-4e24-b350-aec0d8eb683b","type":"Line"},{"attributes":{"line_color":"#8c564b","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"9a860e19-fae3-4b65-90fc-45d7cbb1b633","type":"Line"},{"attributes":{"data_source":{"id":"a6966580-9da1-4e38-998a-438e14b9ed00","type":"ColumnDataSource"},"glyph":{"id":"ea5707c5-5354-42c0-995e-53a3159dfc56","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"5a9484ac-04a1-4a7b-bb56-8f331e9f37a0","type":"Line"},"selection_glyph":null,"view":{"id":"4804e6ac-1216-40aa-9f3f-ac677244dd52","type":"CDSView"}},"id":"aa358168-4830-440d-a228-abeabd58124f","type":"GlyphRenderer"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"6f813316-837d-4b14-86d5-c91684d67643","type":"Line"},{"attributes":{"overlay":{"id":"7a906c4b-04ad-4968-b1e1-2b5188924946","type":"BoxAnnotation"}},"id":"5055f91e-71de-4b25-9ae2-7d31e095658b","type":"BoxZoomTool"},{"attributes":{"label":{"value":"soln3 (pred)"},"renderers":[{"id":"d6d29b12-5d41-47ea-80c1-37763ab692c8","type":"GlyphRenderer"}]},"id":"1b961507-2388-4e22-bb05-634674afe953","type":"LegendItem"},{"attributes":{"label":{"value":"soln4"},"renderers":[{"id":"2ee9a603-b42e-40b9-a1aa-cd533a5a5259","type":"GlyphRenderer"}]},"id":"fe0f1d4b-427b-4095-a8b6-06084b92195e","type":"LegendItem"},{"attributes":{"data_source":{"id":"879dee82-e027-412b-a5db-2fee560cc8a1","type":"ColumnDataSource"},"glyph":{"id":"c67fa676-02db-42b0-aa0d-76db10925468","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"c9f3d6ea-0098-4cce-b00a-42d3a5cec7af","type":"Line"},"selection_glyph":null,"view":{"id":"59468de1-c72d-4e06-a5df-fef577821c8f","type":"CDSView"}},"id":"5003b11d-f3b8-4bc4-9faa-84de101d24d0","type":"GlyphRenderer"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13,14],"y":[0.0002259130124002695,0.0007734210230410099,0.0031785359606146812,0.014298461028374732,0.06061755202244967,0.2918412240687758,1.5680447269696742,9.019769111066125,55.034934040973894]}},"id":"2f5035ea-90b5-4c17-aaee-cef81301ba6d","type":"ColumnDataSource"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11],"y":[0.001659120222090993,0.015179350067972408,0.1388764149927992,1.2705852724186113,11.624629960175621,106.35415398274161]}},"id":"5a4cd82c-aadd-4573-bb8e-de5764ea38a7","type":"ColumnDataSource"},{"attributes":{"label":{"value":"soln1 (pred)"},"renderers":[{"id":"eb8990b7-c916-4d04-b6d1-054838a54285","type":"GlyphRenderer"}]},"id":"29fe5e5b-822e-4d88-8392-8ce4c0d4a3a8","type":"LegendItem"},{"attributes":{"source":{"id":"2f5035ea-90b5-4c17-aaee-cef81301ba6d","type":"ColumnDataSource"}},"id":"3a6233d6-bc2a-4b3f-993b-edaed2ef659c","type":"CDSView"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"7a906c4b-04ad-4968-b1e1-2b5188924946","type":"BoxAnnotation"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"01df0ab9-2c74-4e71-a1fc-4f4413e45578","type":"Line"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13,14],"y":[0.00035395193845033646,0.001321776071563363,0.005022123106755316,0.021716049988754094,0.10115699202287942,0.5809522669296712,2.452624510973692,13.912636548979208,85.0064372359775]}},"id":"879dee82-e027-412b-a5db-2fee560cc8a1","type":"ColumnDataSource"},{"attributes":{"data_source":{"id":"94871f0c-2539-4b00-9202-d9af928b344b","type":"ColumnDataSource"},"glyph":{"id":"e62bc285-b311-47e2-afec-aff6fa1bba2f","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"338b8de4-c4ba-4cc9-8fd5-0192a07d37aa","type":"Line"},"selection_glyph":null,"view":{"id":"26e5fe31-c51a-4004-9bbd-07aaa26c0aaf","type":"CDSView"}},"id":"ee72ef9c-03f5-4a68-b805-6746aacaa91c","type":"GlyphRenderer"},{"attributes":{"source":{"id":"879dee82-e027-412b-a5db-2fee560cc8a1","type":"ColumnDataSource"}},"id":"59468de1-c72d-4e06-a5df-fef577821c8f","type":"CDSView"},{"attributes":{"data_source":{"id":"6c5dd5a3-6ef5-4f5d-ac64-34e311b81b95","type":"ColumnDataSource"},"glyph":{"id":"54af98d8-42b0-40c9-bc3c-993eb8579461","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"62fbc946-d993-43dc-b81a-5379820cfbf3","type":"Line"},"selection_glyph":null,"view":{"id":"c5f0db1f-0789-46c9-8bf4-4a413d163787","type":"CDSView"}},"id":"5b1a14ba-797f-43fa-9b41-1ed18cb3428d","type":"GlyphRenderer"},{"attributes":{"label":{"value":"soln3c"},"renderers":[{"id":"5003b11d-f3b8-4bc4-9faa-84de101d24d0","type":"GlyphRenderer"}]},"id":"c87a7be0-0e4b-4d25-84cb-97b9cd052304","type":"LegendItem"},{"attributes":{},"id":"dde8b600-64d1-4622-a883-376e085edf9b","type":"ResetTool"},{"attributes":{"source":{"id":"5a5490b0-1a2b-4c48-8670-50138572a5a5","type":"ColumnDataSource"}},"id":"63b18fe2-04c3-4f88-9c08-4ca2747dddb3","type":"CDSView"},{"attributes":{"data_source":{"id":"2f5035ea-90b5-4c17-aaee-cef81301ba6d","type":"ColumnDataSource"},"glyph":{"id":"9a860e19-fae3-4b65-90fc-45d7cbb1b633","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1119fd2b-025f-4ad0-b7df-2a72933b57aa","type":"Line"},"selection_glyph":null,"view":{"id":"3a6233d6-bc2a-4b3f-993b-edaed2ef659c","type":"CDSView"}},"id":"2ee9a603-b42e-40b9-a1aa-cd533a5a5259","type":"GlyphRenderer"},{"attributes":{"data_source":{"id":"02499b63-6aaa-400f-a4b4-fc13ff965763","type":"ColumnDataSource"},"glyph":{"id":"629d2121-3e1d-44b6-a136-126a792c80e7","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"6f813316-837d-4b14-86d5-c91684d67643","type":"Line"},"selection_glyph":null,"view":{"id":"5b98b6ff-d952-42bd-bbd5-c2b3b59d5374","type":"CDSView"}},"id":"d6d29b12-5d41-47ea-80c1-37763ab692c8","type":"GlyphRenderer"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12],"y":[0.0013028318677872088,0.006877223693397844,0.036302616552788804,0.19162964988967635,1.0115503014346492,5.339643488998789,28.186233100983515]}},"id":"94871f0c-2539-4b00-9202-d9af928b344b","type":"ColumnDataSource"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"5a9484ac-04a1-4a7b-bb56-8f331e9f37a0","type":"Line"},{"attributes":{"source":{"id":"6c5dd5a3-6ef5-4f5d-ac64-34e311b81b95","type":"ColumnDataSource"}},"id":"c5f0db1f-0789-46c9-8bf4-4a413d163787","type":"CDSView"},{"attributes":{"source":{"id":"94871f0c-2539-4b00-9202-d9af928b344b","type":"ColumnDataSource"}},"id":"26e5fe31-c51a-4004-9bbd-07aaa26c0aaf","type":"CDSView"},{"attributes":{"line_color":"#98df8a","x":{"field":"x"},"y":{"field":"y"}},"id":"54af98d8-42b0-40c9-bc3c-993eb8579461","type":"Line"},{"attributes":{"line_color":"#c5b0d5","x":{"field":"x"},"y":{"field":"y"}},"id":"1ed82d29-0fd1-48eb-80ca-728f2138e676","type":"Line"}],"root_ids":["62a14c3e-b405-4db2-9d24-0f67b2d012fd"]},"title":"Bokeh Application","version":"0.12.14"}};
-  var render_items = [{"docid":"8d9ec970-2449-4fa5-b31c-e447e98d8778","elementid":"c626b78d-3f69-4f3d-9258-b493fec77ed7","modelid":"62a14c3e-b405-4db2-9d24-0f67b2d012fd"}];
+  var docs_json = {"93c31e44-a810-45d5-ab27-3ca6dd9483cc":{"roots":{"references":[{"attributes":{"source":{"id":"e3d7914f-a7e8-4ceb-80d2-677d93d2acef","type":"ColumnDataSource"}},"id":"68965b2c-ca5d-446f-aaa1-43235b92cd12","type":"CDSView"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"1e495c33-4b7e-4e59-afd9-2eabc09151fc","type":"Line"},{"attributes":{},"id":"3385919e-c46b-4528-a98d-f9e6aef76612","type":"BasicTickFormatter"},{"attributes":{"label":{"value":"soln2"},"renderers":[{"id":"0983c18f-9e63-45de-82ee-cc641c8934c2","type":"GlyphRenderer"}]},"id":"fce99948-133b-4bd6-85a6-fcc4a9baae7b","type":"LegendItem"},{"attributes":{"label":{"value":"soln3"},"renderers":[{"id":"7d1ab306-8150-46cb-87a4-bf3151d845d4","type":"GlyphRenderer"}]},"id":"ab30b037-9cd1-441e-8c78-8a3e29801f94","type":"LegendItem"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13],"y":[0.0005076080682850227,0.0022703708511140857,0.010154653016063156,0.045418561388788255,0.2031429055590586,0.9085941698092534,4.063855260607953,18.17634333119044]}},"id":"98f29a3b-d6a9-4319-bb58-3d0c8aa077ae","type":"ColumnDataSource"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"6bac5c71-4d46-4297-8358-03564cf29769","type":"Line"},{"attributes":{"data_source":{"id":"81fc5307-bb95-4eb2-ad05-3e9cf2094db5","type":"ColumnDataSource"},"glyph":{"id":"2d9fbd5d-9d1c-4013-9c03-df86a7b47b16","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"a4ccb0a5-9dc3-4556-9894-a48f6e484f2c","type":"Line"},"selection_glyph":null,"view":{"id":"013e935b-859b-4a7a-8151-3ac2bba13e65","type":"CDSView"}},"id":"1712016a-a2d9-4931-a154-6044d3092716","type":"GlyphRenderer"},{"attributes":{"data_source":{"id":"2f0fcbd1-52f4-4a24-83df-1461d96d2c0e","type":"ColumnDataSource"},"glyph":{"id":"de367b63-fe93-44df-a740-6ff6ff0d411d","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"6bac5c71-4d46-4297-8358-03564cf29769","type":"Line"},"selection_glyph":null,"view":{"id":"326b841f-90c9-411c-aa9f-6d3daacc3694","type":"CDSView"}},"id":"317b27ab-6637-4672-b8c7-415804d86a64","type":"GlyphRenderer"},{"attributes":{"label":{"value":"soln4"},"renderers":[{"id":"8af17f5b-ea9a-4168-b8c5-9b2a3a530a34","type":"GlyphRenderer"}]},"id":"ec6a96c8-15b3-44d0-a7b1-2660429ad527","type":"LegendItem"},{"attributes":{"data_source":{"id":"4fe6ddd7-befe-4d9a-bab0-b868237ce114","type":"ColumnDataSource"},"glyph":{"id":"a2f56a84-9e38-423c-a17b-996ad517d229","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"00864426-959c-4a9f-a682-43993613f8d9","type":"Line"},"selection_glyph":null,"view":{"id":"c2abbfaa-3234-4a54-b7f3-4c9e5786da30","type":"CDSView"}},"id":"6cd00736-e083-466e-91f5-c045e07e8e66","type":"GlyphRenderer"},{"attributes":{"ticker":null},"id":"106a1cd7-5c32-4629-a2bc-14ba4fed3d20","type":"LogTickFormatter"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13,14],"y":[0.00038567033001527304,0.001397148600391123,0.0050341943915936625,0.02474396638456547,0.09142520049999803,0.4770199454997055,2.436652210999455,13.975179572997149,87.31067789300141]}},"id":"e3d7914f-a7e8-4ceb-80d2-677d93d2acef","type":"ColumnDataSource"},{"attributes":{"source":{"id":"c7b65bd9-b02f-47f1-8549-984e73cb9370","type":"ColumnDataSource"}},"id":"a05f4429-2fa2-4d52-9b4e-d3d4ea2e0a8d","type":"CDSView"},{"attributes":{"items":[{"id":"685cc71b-00fb-4225-b4e2-8e62de870377","type":"LegendItem"},{"id":"97357f3c-3938-4338-ba79-195354207d5a","type":"LegendItem"},{"id":"fce99948-133b-4bd6-85a6-fcc4a9baae7b","type":"LegendItem"},{"id":"6b037b72-9c06-41f7-a9d5-6ae75cf854e0","type":"LegendItem"},{"id":"d97b11dd-0618-4bb3-b085-1c68bdd21bb3","type":"LegendItem"},{"id":"7faa495d-1ad4-4ef6-97dd-3886f65de899","type":"LegendItem"},{"id":"ab30b037-9cd1-441e-8c78-8a3e29801f94","type":"LegendItem"},{"id":"bd478855-def6-4d98-82f9-b0611564c40f","type":"LegendItem"},{"id":"2781df4d-97be-415e-9d1c-dae8853c6c64","type":"LegendItem"},{"id":"c311af71-471b-48e6-b491-8e95da500cd0","type":"LegendItem"},{"id":"ec6a96c8-15b3-44d0-a7b1-2660429ad527","type":"LegendItem"},{"id":"f4f5a8bc-6d2b-4132-8c12-2a2dd4708765","type":"LegendItem"}],"plot":{"id":"5ed7f570-447c-4c8c-b9ea-75c1ff540e2f","subtype":"Figure","type":"Plot"}},"id":"e9c90d39-92c2-48b1-be7c-7246fead6947","type":"Legend"},{"attributes":{"label":{"value":"soln2b (pred)"},"renderers":[{"id":"f445eb8a-70ff-40b0-813a-6d2f9003579c","type":"GlyphRenderer"}]},"id":"7faa495d-1ad4-4ef6-97dd-3886f65de899","type":"LegendItem"},{"attributes":{"line_color":"#c49c94","x":{"field":"x"},"y":{"field":"y"}},"id":"2d9fbd5d-9d1c-4013-9c03-df86a7b47b16","type":"Line"},{"attributes":{"source":{"id":"2f0fcbd1-52f4-4a24-83df-1461d96d2c0e","type":"ColumnDataSource"}},"id":"326b841f-90c9-411c-aa9f-6d3daacc3694","type":"CDSView"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13,14],"y":[0.00015702866088661608,0.0007457901439919703,0.0035420472653535213,0.016822559175753114,0.07989687206883449,0.3794612995378526,1.8022091994152416,8.559391965432614,40.651879283317484]}},"id":"81fc5307-bb95-4eb2-ad05-3e9cf2094db5","type":"ColumnDataSource"},{"attributes":{"data_source":{"id":"c395a6ca-6357-487c-a317-0dd0790a2d49","type":"ColumnDataSource"},"glyph":{"id":"d979c32c-3e99-49c9-99c0-d1e19513e969","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"054947a0-1f5c-437a-8b0f-f8e72a9b11f6","type":"Line"},"selection_glyph":null,"view":{"id":"9e7115e5-5562-43a4-bfd4-d8a42d9a919a","type":"CDSView"}},"id":"0983c18f-9e63-45de-82ee-cc641c8934c2","type":"GlyphRenderer"},{"attributes":{"label":{"value":"soln4 (pred)"},"renderers":[{"id":"1712016a-a2d9-4931-a154-6044d3092716","type":"GlyphRenderer"}]},"id":"f4f5a8bc-6d2b-4132-8c12-2a2dd4708765","type":"LegendItem"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"4a483417-5116-4f33-bf70-31146424b701","type":"Line"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12],"y":[0.001347447800914911,0.007065315026219537,0.037046835050551875,0.19425432300888784,1.0185685755922411,5.340843524684589,28.004603949792894]}},"id":"2f0fcbd1-52f4-4a24-83df-1461d96d2c0e","type":"ColumnDataSource"},{"attributes":{"source":{"id":"81fc5307-bb95-4eb2-ad05-3e9cf2094db5","type":"ColumnDataSource"}},"id":"013e935b-859b-4a7a-8151-3ac2bba13e65","type":"CDSView"},{"attributes":{"data_source":{"id":"e3d7914f-a7e8-4ceb-80d2-677d93d2acef","type":"ColumnDataSource"},"glyph":{"id":"c7bd2ce7-53e6-496f-949e-d184c1cf3553","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"618c5432-0278-477e-ba6c-8d890a8dd0af","type":"Line"},"selection_glyph":null,"view":{"id":"68965b2c-ca5d-446f-aaa1-43235b92cd12","type":"CDSView"}},"id":"3567d8d4-110b-45e1-9872-8d763aca83fb","type":"GlyphRenderer"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"2d331d9f-4945-4e7f-ae69-d69e6527e480","type":"Line"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13],"y":[0.000669362894986989,0.0023382614060436318,0.00891167076470618,0.03863145649996692,0.1681285595994268,0.7890903460029222,4.215942954997445,24.044861271999252]}},"id":"118858e5-0b03-4920-9c19-4cd16ee6dab9","type":"ColumnDataSource"},{"attributes":{"label":{"value":"soln3c (pred)"},"renderers":[{"id":"770309a4-ac7e-485d-bf09-8c7a42d52437","type":"GlyphRenderer"}]},"id":"c311af71-471b-48e6-b491-8e95da500cd0","type":"LegendItem"},{"attributes":{"label":{"value":"soln3 (pred)"},"renderers":[{"id":"a9a1480c-2b83-4b05-8276-b5c9f729665c","type":"GlyphRenderer"}]},"id":"bd478855-def6-4d98-82f9-b0611564c40f","type":"LegendItem"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"69b65df7-c909-4c23-86d3-586932a219c0","type":"Line"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11],"y":[0.0014680678911416511,0.013978226810476536,0.13309386162868686,1.2672548702643482,12.066183117362968,114.88831365971795]}},"id":"aaa58f19-bcfc-452e-aa67-14b9340909a9","type":"ColumnDataSource"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13,14],"y":[0.00022404563998861703,0.000786314182736973,0.003206448287399569,0.013826071758059345,0.06264786599993906,0.3175519533336531,1.6236238229976152,9.273948764999659,56.707586550001]}},"id":"c7b65bd9-b02f-47f1-8549-984e73cb9370","type":"ColumnDataSource"},{"attributes":{"line_color":"#98df8a","x":{"field":"x"},"y":{"field":"y"}},"id":"611e45a9-ae8a-4d36-96c7-abca41c8d37e","type":"Line"},{"attributes":{"label":{"value":"soln3c"},"renderers":[{"id":"3567d8d4-110b-45e1-9872-8d763aca83fb","type":"GlyphRenderer"}]},"id":"2781df4d-97be-415e-9d1c-dae8853c6c64","type":"LegendItem"},{"attributes":{"source":{"id":"4fe6ddd7-befe-4d9a-bab0-b868237ce114","type":"ColumnDataSource"}},"id":"c2abbfaa-3234-4a54-b7f3-4c9e5786da30","type":"CDSView"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"a4ccb0a5-9dc3-4556-9894-a48f6e484f2c","type":"Line"},{"attributes":{"line_color":"#8c564b","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"caf62d0b-50ef-4275-a122-ccc74b855f61","type":"Line"},{"attributes":{},"id":"d148d8cb-005f-4181-a37f-8b6277197462","type":"HelpTool"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"00864426-959c-4a9f-a682-43993613f8d9","type":"Line"},{"attributes":{"callback":null},"id":"60201cb1-de3d-4bd3-80f7-88c257dcab85","type":"DataRange1d"},{"attributes":{"line_color":"#9467bd","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"c7bd2ce7-53e6-496f-949e-d184c1cf3553","type":"Line"},{"attributes":{"source":{"id":"ba518304-0e16-408d-911d-5cecd75fe8c8","type":"ColumnDataSource"}},"id":"243e0a80-f976-48b2-a087-e70978b18227","type":"CDSView"},{"attributes":{},"id":"5df65df6-73a5-46d8-a1f3-82e480b24f02","type":"ResetTool"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12],"y":[0.001525706194988743,0.0077872415114483414,0.0323860789599712,0.16361707750002097,0.9308539289995679,5.345768579001742,33.31667116800236]}},"id":"c395a6ca-6357-487c-a317-0dd0790a2d49","type":"ColumnDataSource"},{"attributes":{"source":{"id":"243c2c50-a8fd-477a-ad3e-2400424a0eb6","type":"ColumnDataSource"}},"id":"eab88afc-e994-43ab-8ed8-4ac827e2f581","type":"CDSView"},{"attributes":{"source":{"id":"98f29a3b-d6a9-4319-bb58-3d0c8aa077ae","type":"ColumnDataSource"}},"id":"d0d36d00-8a74-4c80-bc31-c7ce9fd9662d","type":"CDSView"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"618c5432-0278-477e-ba6c-8d890a8dd0af","type":"Line"},{"attributes":{},"id":"030bea90-0115-49fc-8527-7bde38ccebd2","type":"SaveTool"},{"attributes":{"overlay":{"id":"62b76fe6-9319-431b-a741-575d057f8d21","type":"BoxAnnotation"}},"id":"32b46c72-ca16-48a5-adac-35b2975cc26a","type":"BoxZoomTool"},{"attributes":{},"id":"d5daf67a-a2be-4170-b669-5cde6317f37d","type":"PanTool"},{"attributes":{"line_color":"#d62728","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"5f6fe187-bbfc-453c-9315-b6a8bd03bd47","type":"Line"},{"attributes":{},"id":"6b0d6c0f-c1bd-4071-845a-75d34c32d5a0","type":"BasicTicker"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13,14],"y":[0.00027087726017759576,0.0012609027806132933,0.005869358768306952,0.027321196273630062,0.12717705549928993,0.5919947019699245,2.7556678819507483,12.827319991793965,59.709712933692835]}},"id":"243c2c50-a8fd-477a-ad3e-2400424a0eb6","type":"ColumnDataSource"},{"attributes":{"line_color":"#ffbb78","x":{"field":"x"},"y":{"field":"y"}},"id":"de367b63-fe93-44df-a740-6ff6ff0d411d","type":"Line"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_scroll":"auto","active_tap":"auto","tools":[{"id":"d5daf67a-a2be-4170-b669-5cde6317f37d","type":"PanTool"},{"id":"5dfd9fa2-c8fb-4782-b32a-c8cf576bea78","type":"WheelZoomTool"},{"id":"32b46c72-ca16-48a5-adac-35b2975cc26a","type":"BoxZoomTool"},{"id":"030bea90-0115-49fc-8527-7bde38ccebd2","type":"SaveTool"},{"id":"5df65df6-73a5-46d8-a1f3-82e480b24f02","type":"ResetTool"},{"id":"d148d8cb-005f-4181-a37f-8b6277197462","type":"HelpTool"}]},"id":"e0c745fb-5135-407a-b94e-42614d3061e0","type":"Toolbar"},{"attributes":{"source":{"id":"c395a6ca-6357-487c-a317-0dd0790a2d49","type":"ColumnDataSource"}},"id":"9e7115e5-5562-43a4-bfd4-d8a42d9a919a","type":"CDSView"},{"attributes":{"plot":{"id":"5ed7f570-447c-4c8c-b9ea-75c1ff540e2f","subtype":"Figure","type":"Plot"},"ticker":{"id":"6b0d6c0f-c1bd-4071-845a-75d34c32d5a0","type":"BasicTicker"}},"id":"cc2e2b71-8b23-4045-a4e4-f0a2881a8ba3","type":"Grid"},{"attributes":{"plot":null,"text":"Timings"},"id":"5a4c1ad1-45c0-465d-bb39-cb06a74f4511","type":"Title"},{"attributes":{"label":{"value":"soln2 (pred)"},"renderers":[{"id":"317b27ab-6637-4672-b8c7-415804d86a64","type":"GlyphRenderer"}]},"id":"6b037b72-9c06-41f7-a9d5-6ae75cf854e0","type":"LegendItem"},{"attributes":{},"id":"5dfd9fa2-c8fb-4782-b32a-c8cf576bea78","type":"WheelZoomTool"},{"attributes":{"data_source":{"id":"98f29a3b-d6a9-4319-bb58-3d0c8aa077ae","type":"ColumnDataSource"},"glyph":{"id":"40333b8b-2fc8-49e5-9582-0239fb1dbc33","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"302f3382-ad8c-43a3-a350-17c4c0d3daaa","type":"Line"},"selection_glyph":null,"view":{"id":"d0d36d00-8a74-4c80-bc31-c7ce9fd9662d","type":"CDSView"}},"id":"a9a1480c-2b83-4b05-8276-b5c9f729665c","type":"GlyphRenderer"},{"attributes":{"label":{"value":"soln1"},"renderers":[{"id":"6cd00736-e083-466e-91f5-c045e07e8e66","type":"GlyphRenderer"}]},"id":"685cc71b-00fb-4225-b4e2-8e62de870377","type":"LegendItem"},{"attributes":{"label":{"value":"soln1 (pred)"},"renderers":[{"id":"d5affaad-5723-49cc-925d-9b27da7cfbf5","type":"GlyphRenderer"}]},"id":"97357f3c-3938-4338-ba79-195354207d5a","type":"LegendItem"},{"attributes":{"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"a2f56a84-9e38-423c-a17b-996ad517d229","type":"Line"},{"attributes":{"line_color":"#aec7e8","x":{"field":"x"},"y":{"field":"y"}},"id":"efc43236-f9ba-4c0d-932e-78de942bf9aa","type":"Line"},{"attributes":{"line_color":"#ff9896","x":{"field":"x"},"y":{"field":"y"}},"id":"40333b8b-2fc8-49e5-9582-0239fb1dbc33","type":"Line"},{"attributes":{"source":{"id":"aaa58f19-bcfc-452e-aa67-14b9340909a9","type":"ColumnDataSource"}},"id":"675c9e42-36b1-427b-b2fa-eca581a43942","type":"CDSView"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"62b76fe6-9319-431b-a741-575d057f8d21","type":"BoxAnnotation"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11],"y":[0.0018197510199934187,0.01340412654129093,0.11007490678561485,1.0785956750005425,11.899116005999531,139.2367234759986]}},"id":"4fe6ddd7-befe-4d9a-bab0-b868237ce114","type":"ColumnDataSource"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"0a7c372d-def2-41bc-8237-ea5fa45859b7","type":"Line"},{"attributes":{"data_source":{"id":"c7b65bd9-b02f-47f1-8549-984e73cb9370","type":"ColumnDataSource"},"glyph":{"id":"caf62d0b-50ef-4275-a122-ccc74b855f61","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"b47d8ca7-a7c3-4145-904d-bb1a4cdc69d7","type":"Line"},"selection_glyph":null,"view":{"id":"a05f4429-2fa2-4d52-9b4e-d3d4ea2e0a8d","type":"CDSView"}},"id":"8af17f5b-ea9a-4168-b8c5-9b2a3a530a34","type":"GlyphRenderer"},{"attributes":{"data_source":{"id":"ba518304-0e16-408d-911d-5cecd75fe8c8","type":"ColumnDataSource"},"glyph":{"id":"611e45a9-ae8a-4d36-96c7-abca41c8d37e","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"0a7c372d-def2-41bc-8237-ea5fa45859b7","type":"Line"},"selection_glyph":null,"view":{"id":"243e0a80-f976-48b2-a087-e70978b18227","type":"CDSView"}},"id":"f445eb8a-70ff-40b0-813a-6d2f9003579c","type":"GlyphRenderer"},{"attributes":{"callback":null},"id":"dc19c703-1a0e-45d5-bd24-c0dd3a6b24db","type":"DataRange1d"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"054947a0-1f5c-437a-8b0f-f8e72a9b11f6","type":"Line"},{"attributes":{"axis_label":"time (sec)","formatter":{"id":"106a1cd7-5c32-4629-a2bc-14ba4fed3d20","type":"LogTickFormatter"},"plot":{"id":"5ed7f570-447c-4c8c-b9ea-75c1ff540e2f","subtype":"Figure","type":"Plot"},"ticker":{"id":"411d9cd6-d62b-47c6-be11-d3051fd56723","type":"LogTicker"}},"id":"dea88f70-3ddf-4f31-8ecd-15e02af888ff","type":"LogAxis"},{"attributes":{"data_source":{"id":"aaa58f19-bcfc-452e-aa67-14b9340909a9","type":"ColumnDataSource"},"glyph":{"id":"efc43236-f9ba-4c0d-932e-78de942bf9aa","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"4a483417-5116-4f33-bf70-31146424b701","type":"Line"},"selection_glyph":null,"view":{"id":"675c9e42-36b1-427b-b2fa-eca581a43942","type":"CDSView"}},"id":"d5affaad-5723-49cc-925d-9b27da7cfbf5","type":"GlyphRenderer"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13],"y":[0.0007698929446741214,0.0037372812675439135,0.018141835653068202,0.08806567590221366,0.4274960605103978,2.0751885440002162,10.073560649911519,48.89995391543334]}},"id":"ba518304-0e16-408d-911d-5cecd75fe8c8","type":"ColumnDataSource"},{"attributes":{"callback":null,"column_names":["x","y"],"data":{"x":[6,7,8,9,10,11,12,13],"y":[0.0010884158649969323,0.0036510059672153028,0.015541944203707518,0.075160096583204,0.3391581900013989,1.8587268240007688,10.469380580998404,65.57166542400228]}},"id":"2fddcc15-6fc0-4e3f-99c1-d0893b326913","type":"ColumnDataSource"},{"attributes":{"axis_label":"N","formatter":{"id":"3385919e-c46b-4528-a98d-f9e6aef76612","type":"BasicTickFormatter"},"plot":{"id":"5ed7f570-447c-4c8c-b9ea-75c1ff540e2f","subtype":"Figure","type":"Plot"},"ticker":{"id":"6b0d6c0f-c1bd-4071-845a-75d34c32d5a0","type":"BasicTicker"}},"id":"d6731eba-ff9e-4305-920c-bd24af9711f7","type":"LinearAxis"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"b47d8ca7-a7c3-4145-904d-bb1a4cdc69d7","type":"Line"},{"attributes":{"source":{"id":"118858e5-0b03-4920-9c19-4cd16ee6dab9","type":"ColumnDataSource"}},"id":"bd914e82-e1ed-4160-8f06-2138f7079aa7","type":"CDSView"},{"attributes":{"num_minor_ticks":10},"id":"411d9cd6-d62b-47c6-be11-d3051fd56723","type":"LogTicker"},{"attributes":{},"id":"7c29f4ad-98fb-4ce0-ac8a-8305158351dd","type":"LogScale"},{"attributes":{"line_alpha":0.1,"line_color":"#1f77b4","x":{"field":"x"},"y":{"field":"y"}},"id":"302f3382-ad8c-43a3-a350-17c4c0d3daaa","type":"Line"},{"attributes":{"dimension":1,"plot":{"id":"5ed7f570-447c-4c8c-b9ea-75c1ff540e2f","subtype":"Figure","type":"Plot"},"ticker":{"id":"411d9cd6-d62b-47c6-be11-d3051fd56723","type":"LogTicker"}},"id":"fd0de781-aece-4cf6-9d64-da2f0c720f87","type":"Grid"},{"attributes":{"data_source":{"id":"243c2c50-a8fd-477a-ad3e-2400424a0eb6","type":"ColumnDataSource"},"glyph":{"id":"e25f1c3e-e063-406d-84bf-200e589d47b7","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"69b65df7-c909-4c23-86d3-586932a219c0","type":"Line"},"selection_glyph":null,"view":{"id":"eab88afc-e994-43ab-8ed8-4ac827e2f581","type":"CDSView"}},"id":"770309a4-ac7e-485d-bf09-8c7a42d52437","type":"GlyphRenderer"},{"attributes":{"source":{"id":"2fddcc15-6fc0-4e3f-99c1-d0893b326913","type":"ColumnDataSource"}},"id":"a5203cac-ee35-4b8e-8581-2d4f600c4760","type":"CDSView"},{"attributes":{"line_color":"#ff7f0e","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"d979c32c-3e99-49c9-99c0-d1e19513e969","type":"Line"},{"attributes":{"below":[{"id":"d6731eba-ff9e-4305-920c-bd24af9711f7","type":"LinearAxis"}],"left":[{"id":"dea88f70-3ddf-4f31-8ecd-15e02af888ff","type":"LogAxis"}],"renderers":[{"id":"d6731eba-ff9e-4305-920c-bd24af9711f7","type":"LinearAxis"},{"id":"cc2e2b71-8b23-4045-a4e4-f0a2881a8ba3","type":"Grid"},{"id":"dea88f70-3ddf-4f31-8ecd-15e02af888ff","type":"LogAxis"},{"id":"fd0de781-aece-4cf6-9d64-da2f0c720f87","type":"Grid"},{"id":"62b76fe6-9319-431b-a741-575d057f8d21","type":"BoxAnnotation"},{"id":"e9c90d39-92c2-48b1-be7c-7246fead6947","type":"Legend"},{"id":"6cd00736-e083-466e-91f5-c045e07e8e66","type":"GlyphRenderer"},{"id":"d5affaad-5723-49cc-925d-9b27da7cfbf5","type":"GlyphRenderer"},{"id":"0983c18f-9e63-45de-82ee-cc641c8934c2","type":"GlyphRenderer"},{"id":"317b27ab-6637-4672-b8c7-415804d86a64","type":"GlyphRenderer"},{"id":"775643ab-1f8e-4f01-a784-4b83a0b39548","type":"GlyphRenderer"},{"id":"f445eb8a-70ff-40b0-813a-6d2f9003579c","type":"GlyphRenderer"},{"id":"7d1ab306-8150-46cb-87a4-bf3151d845d4","type":"GlyphRenderer"},{"id":"a9a1480c-2b83-4b05-8276-b5c9f729665c","type":"GlyphRenderer"},{"id":"3567d8d4-110b-45e1-9872-8d763aca83fb","type":"GlyphRenderer"},{"id":"770309a4-ac7e-485d-bf09-8c7a42d52437","type":"GlyphRenderer"},{"id":"8af17f5b-ea9a-4168-b8c5-9b2a3a530a34","type":"GlyphRenderer"},{"id":"1712016a-a2d9-4931-a154-6044d3092716","type":"GlyphRenderer"}],"title":{"id":"5a4c1ad1-45c0-465d-bb39-cb06a74f4511","type":"Title"},"toolbar":{"id":"e0c745fb-5135-407a-b94e-42614d3061e0","type":"Toolbar"},"x_range":{"id":"60201cb1-de3d-4bd3-80f7-88c257dcab85","type":"DataRange1d"},"x_scale":{"id":"2aa1f993-3f49-4e28-aff4-cff4300ee17e","type":"LinearScale"},"y_range":{"id":"dc19c703-1a0e-45d5-bd24-c0dd3a6b24db","type":"DataRange1d"},"y_scale":{"id":"7c29f4ad-98fb-4ce0-ac8a-8305158351dd","type":"LogScale"}},"id":"5ed7f570-447c-4c8c-b9ea-75c1ff540e2f","subtype":"Figure","type":"Plot"},{"attributes":{"line_color":"#c5b0d5","x":{"field":"x"},"y":{"field":"y"}},"id":"e25f1c3e-e063-406d-84bf-200e589d47b7","type":"Line"},{"attributes":{"label":{"value":"soln2b"},"renderers":[{"id":"775643ab-1f8e-4f01-a784-4b83a0b39548","type":"GlyphRenderer"}]},"id":"d97b11dd-0618-4bb3-b085-1c68bdd21bb3","type":"LegendItem"},{"attributes":{"data_source":{"id":"2fddcc15-6fc0-4e3f-99c1-d0893b326913","type":"ColumnDataSource"},"glyph":{"id":"ff85e121-951c-4008-beb2-3d84cdb5cc47","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1e495c33-4b7e-4e59-afd9-2eabc09151fc","type":"Line"},"selection_glyph":null,"view":{"id":"a5203cac-ee35-4b8e-8581-2d4f600c4760","type":"CDSView"}},"id":"775643ab-1f8e-4f01-a784-4b83a0b39548","type":"GlyphRenderer"},{"attributes":{},"id":"2aa1f993-3f49-4e28-aff4-cff4300ee17e","type":"LinearScale"},{"attributes":{"line_color":"#2ca02c","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"ff85e121-951c-4008-beb2-3d84cdb5cc47","type":"Line"},{"attributes":{"data_source":{"id":"118858e5-0b03-4920-9c19-4cd16ee6dab9","type":"ColumnDataSource"},"glyph":{"id":"5f6fe187-bbfc-453c-9315-b6a8bd03bd47","type":"Line"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2d331d9f-4945-4e7f-ae69-d69e6527e480","type":"Line"},"selection_glyph":null,"view":{"id":"bd914e82-e1ed-4160-8f06-2138f7079aa7","type":"CDSView"}},"id":"7d1ab306-8150-46cb-87a4-bf3151d845d4","type":"GlyphRenderer"}],"root_ids":["5ed7f570-447c-4c8c-b9ea-75c1ff540e2f"]},"title":"Bokeh Application","version":"0.12.14"}};
+  var render_items = [{"docid":"93c31e44-a810-45d5-ab27-3ca6dd9483cc","elementid":"17750240-daee-4c0a-8ec9-d70e47b60487","modelid":"5ed7f570-447c-4c8c-b9ea-75c1ff540e2f"}];
   root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
 
   }
