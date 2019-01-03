@@ -1,32 +1,52 @@
 
 ## Eight Queens Puzzle
 
-**Task: Count the number of ways you can place N queens on an NxN chess board, such that no two queens are attacking one another.**
+https://en.wikipedia.org/wiki/Eight_queens_puzzle
+
+The N-Queens puzzle refers to a set of related questions that stem from the challenge of arranging eight queens on a standard 8x8 chess board in such a way that no two queeens are attacking one another.  The more general problem extends this to N queens on an NxN chess board.  Except for N=2 and N=3, this is know to have solutions for all positive N.
+
+Some of the different forms of the challenge are:
+1. Find all of the arrangements of queens that satisfy the condition.
+2. Just count all of the arrangements of queens that satisfy the condition.
+3. Find at least *one* arrangment of queens that satify the condition.
+
+The second challenge (counting) has been solved up to N=27. (The number of solutions grows exponentially with N.)
+
+The third challenge (finding at least one arrangement) can solved for much, much larger values of N.  (Solutions up to N=500,000 have been reported.)
 
 **Utility functions**
 
 
 ```python
-import numpy as np
 import timeit
-    
-def print_solutions(solns):
-    for i, b in enumerate(solns):
-        print("{:2d}: {}".format(i+1, " ".join(map(str, b))))
 
-def timings(fn, maxtime=15, nrun=0):
+def timings(fn, maxtime=15, runs=0):
+    """Time the given function, fn(N), for increasing values of N, starting from N=6.
+    This continues until the calculation time exceeds `maxtime` seconds.
+    If a non-zero value for `runs` is given, the function is evaluted that many times
+    for each value of N.  If `runs` is zero, we try to pick a number of evaluations
+    that totals to roughly 1 second.
+    
+    A list of (n, timing) tuples is returned.
+    """
     result = []
-    n, dt = 6, 0.001
-    while dt < maxtime:
-        nrun = max(1, int(0.2/dt))
-        dt = timeit.timeit("fn(n)", number=nrun, globals=locals()) / nrun
-        result.append((n, dt))
+    n, exec_time = 6, 0.001
+    while exec_time < maxtime:
+        nrun = runs or max(1, int(0.2/exec_time))  # assume time increases ~5x each round.
+        exec_time = timeit.timeit("fn(n)", number=nrun, globals=locals()) / nrun
+        result.append((n, exec_time))
         n += 1              
     return result
+```
+
+
+```python
+import numpy as np
 
 def expfit(n, y):
     """Fit the (n, y) data to a simple exponential model y = exp(a*x + b) and print the results.
     The factor exp(a) and offset b are displayed, along with the predictions for each point.
+    
     A list of (n, timing, predicted timing) tuples is also returned.
     """
     cf = np.polyfit(n, np.log(y), 1)
@@ -34,7 +54,10 @@ def expfit(n, y):
     yp = np.exp(np.polyval(cf, n))
     print("\n".join(["{:2d}: {:6f}  pred: {:6f}".format(*val) for val in zip(n, y, yp)]))
     return list(zip(n, y, yp))
+```
 
+
+```python
 from bokeh.plotting import figure, output_notebook, show
 from bokeh.palettes import Category20 
 output_notebook()
@@ -72,17 +95,25 @@ def plot_timings(*named_timings, log=True):
 
     <div class="bk-root">
         <a href="https://bokeh.pydata.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
-        <span id="76c5978e-eb05-4d8b-adb9-f57811cca537">Loading BokehJS ...</span>
+        <span id="92509c89-d69f-4178-ad28-4036e9878ab3">Loading BokehJS ...</span>
     </div>
 
 
 
 
+
+```python
+def print_solutions(solns):
+    for i, b in enumerate(solns):
+        print("{:2d}: {}".format(i+1, " ".join(map(str, b))))
+```
+
 ### 1. Consider all possible arrangements of the N queens on distinct rows and columns.
+* This is the most reasonable "brute-force" solution to the problem, because we know that, for every solution, the column numbers of the queens will be some permution of the integers 1 to N.  We can generate those N! permutations directly.
 
 
 ```python
-NQUEEN = 10
+NQUEEN = 8
 ```
 
 
@@ -109,7 +140,7 @@ print("Found {} solutions".format(len(solns)))
 # print_solutions(solns)
 ```
 
-    Found 724 solutions
+    Found 92 solutions
 
 
 
@@ -119,17 +150,19 @@ n, y = zip(*time1)
 pred1 = expfit(n, y)
 ```
 
-    exp(a): 9.521513
-    b: -20.04513039053966
-     6: 0.001820  pred: 0.001468
-     7: 0.013404  pred: 0.013978
-     8: 0.110075  pred: 0.133094
-     9: 1.078596  pred: 1.267255
-    10: 11.899116  pred: 12.066183
-    11: 139.236723  pred: 114.888314
+    exp(a): 9.351711
+    b: -19.859046516005407
+     6: 0.001941  pred: 0.001587
+     7: 0.014305  pred: 0.014844
+     8: 0.114603  pred: 0.138821
+     9: 1.140848  pred: 1.298212
+    10: 11.839864  pred: 12.140502
+    11: 136.153895  pred: 113.534471
 
 
 ### 2. Find solutions using an exhaustive depth-first search.
+* Doing a classic tree search for solutions should let us reduce the number of positions we need to look at, significantly, because it lets us backtrack as soon as we find that some queen placement prevents further queens from being placed.
+* In principle, a breadth-first search wouldn't examine more positions than this depth-first search, but it would require storing many more intermediate states.  Since we want to find all solutions, anyway, a depth-first search makes more sense.
 
 #### a. Reuse the *attack()* function from the brute-force search
 
@@ -153,7 +186,7 @@ solns = solution2(NQUEEN)
 print("Found {} solutions".format(len(solns)))
 ```
 
-    Found 724 solutions
+    Found 92 solutions
 
 
 
@@ -163,15 +196,15 @@ n, y = zip(*time2)
 pred2 = expfit(n, y)
 ```
 
-    exp(a): 5.243480
-    b: -16.55145491075078
-     6: 0.001526  pred: 0.001347
-     7: 0.007787  pred: 0.007065
-     8: 0.032386  pred: 0.037047
-     9: 0.163617  pred: 0.194254
-    10: 0.930854  pred: 1.018569
-    11: 5.345769  pred: 5.340844
-    12: 33.316671  pred: 28.004604
+    exp(a): 5.267663
+    b: -16.574365515359947
+     6: 0.001537  pred: 0.001354
+     7: 0.007168  pred: 0.007131
+     8: 0.035930  pred: 0.037565
+     9: 0.178009  pred: 0.197882
+    10: 0.908257  pred: 1.042376
+    11: 5.407617  pred: 5.490888
+    12: 34.333706  pred: 28.924150
 
 
 #### b. Only check attacks on newly added queens 
@@ -204,7 +237,7 @@ solns = solution2b(NQUEEN)
 print("Found {} solutions".format(len(solns)))
 ```
 
-    Found 724 solutions
+    Found 92 solutions
 
 
 
@@ -214,16 +247,16 @@ n, y = zip(*time2b)
 pred2b = expfit(n, y)
 ```
 
-    exp(a): 4.854287
-    b: -16.648432405440953
-     6: 0.001088  pred: 0.000770
-     7: 0.003651  pred: 0.003737
-     8: 0.015542  pred: 0.018142
-     9: 0.075160  pred: 0.088066
-    10: 0.339158  pred: 0.427496
-    11: 1.858727  pred: 2.075189
-    12: 10.469381  pred: 10.073561
-    13: 65.571665  pred: 48.899954
+    exp(a): 4.900585
+    b: -16.74233765946474
+     6: 0.000934  pred: 0.000742
+     7: 0.003853  pred: 0.003636
+     8: 0.015886  pred: 0.017819
+     9: 0.075273  pred: 0.087323
+    10: 0.351358  pred: 0.427932
+    11: 1.874776  pred: 2.097116
+    12: 10.534047  pred: 10.277098
+    13: 65.299843  pred: 50.363793
 
 
 ### 3. Track search state using tuples of bit vectors.
@@ -274,37 +307,31 @@ for q in successors(q2, NQUEEN):
     print(q)
 ```
 
-    0000000000, 0000000000, 0000000000 ()
+    00000000, 00000000, 00000000 ()
     - - - - - -
-    1000000000, 0100000000, 0000000000 (9)
-    0100000000, 0010000000, 1000000000 (8)
-    0010000000, 0001000000, 0100000000 (7)
-    0001000000, 0000100000, 0010000000 (6)
-    0000100000, 0000010000, 0001000000 (5)
-    0000010000, 0000001000, 0000100000 (4)
-    0000001000, 0000000100, 0000010000 (3)
-    0000000100, 0000000010, 0000001000 (2)
-    0000000010, 0000000001, 0000000100 (1)
-    0000000001, 0000000000, 0000000010 (0)
+    10000000, 01000000, 00000000 (7)
+    01000000, 00100000, 10000000 (6)
+    00100000, 00010000, 01000000 (5)
+    00010000, 00001000, 00100000 (4)
+    00001000, 00000100, 00010000 (3)
+    00000100, 00000010, 00001000 (2)
+    00000010, 00000001, 00000100 (1)
+    00000001, 00000000, 00000010 (0)
     ===========
-    0001000000, 0000100000, 0010000000 (6)
+    00010000, 00001000, 00100000 (4)
     - - - - - -
-    1001000000, 0100010000, 0100000000 (6,9)
-    0101000000, 0010010000, 1100000000 (6,8)
-    0001010000, 0000011000, 0100100000 (6,4)
-    0001001000, 0000010100, 0100010000 (6,3)
-    0001000100, 0000010010, 0100001000 (6,2)
-    0001000010, 0000010001, 0100000100 (6,1)
-    0001000001, 0000010000, 0100000010 (6,0)
+    10010000, 01000100, 01000000 (4,7)
+    01010000, 00100100, 11000000 (4,6)
+    00010100, 00000110, 01001000 (4,2)
+    00010010, 00000101, 01000100 (4,1)
+    00010001, 00000100, 01000010 (4,0)
     ===========
-    1001000000, 0100010000, 0100000000 (6,9)
+    10010000, 01000100, 01000000 (4,7)
     - - - - - -
-    1011000000, 0011001000, 11100000000 (6,9,7)
-    1001100000, 0010011000, 11001000000 (6,9,5)
-    1001001000, 0010001100, 11000010000 (6,9,3)
-    1001000100, 0010001010, 11000001000 (6,9,2)
-    1001000010, 0010001001, 11000000100 (6,9,1)
-    1001000001, 0010001000, 11000000010 (6,9,0)
+    10110000, 00110010, 111000000 (4,7,5)
+    10011000, 00100110, 110010000 (4,7,3)
+    10010010, 00100011, 110000100 (4,7,1)
+    10010001, 00100010, 110000010 (4,7,0)
 
 
 #### a. Find all solutions
@@ -328,7 +355,7 @@ solns = solution3(NQUEEN)
 print("Found {} solutions".format(len(solns)))
 ```
 
-    Found 724 solutions
+    Found 92 solutions
 
 
 
@@ -338,19 +365,21 @@ n, y = zip(*time3)
 pred3 = expfit(n, y)
 ```
 
-    exp(a): 4.472685
-    b: -16.57373394920169
-     6: 0.000669  pred: 0.000508
-     7: 0.002338  pred: 0.002270
-     8: 0.008912  pred: 0.010155
-     9: 0.038631  pred: 0.045419
-    10: 0.168129  pred: 0.203143
-    11: 0.789090  pred: 0.908594
-    12: 4.215943  pred: 4.063855
-    13: 24.044861  pred: 18.176343
+    exp(a): 4.470174
+    b: -16.58158031509165
+     6: 0.000690  pred: 0.000502
+     7: 0.002276  pred: 0.002244
+     8: 0.008711  pred: 0.010030
+     9: 0.036968  pred: 0.044836
+    10: 0.163304  pred: 0.200427
+    11: 0.780103  pred: 0.895943
+    12: 4.251360  pred: 4.005022
+    13: 23.824188  pred: 17.903145
 
 
 #### b. Just count the number of solutions
+* Keeping track of which queens are in which columns isn't necessary if you just want to count the number of solutions.  So, we can simplify things a little by not keeping track of that.
+* The speedup from this is much less than I expected. (~8%)
 
 
 ```python
@@ -384,7 +413,7 @@ nsolns = solution3b(NQUEEN)
 print("Found {} solutions".format(nsolns))
 ```
 
-    Found 724 solutions
+    Found 92 solutions
 
 
 
@@ -394,19 +423,20 @@ n, y = zip(*time3b)
 pred3b = expfit(n, y)
 ```
 
-    exp(a): 4.470358
-    b: -16.598125842041316
-     6: 0.000649  pred: 0.000494
-     7: 0.002319  pred: 0.002208
-     8: 0.008206  pred: 0.009869
-     9: 0.039181  pred: 0.044117
-    10: 0.158368  pred: 0.197219
-    11: 0.786077  pred: 0.881639
-    12: 4.245627  pred: 3.941242
-    13: 22.398824  pred: 17.618762
+    exp(a): 4.484820
+    b: -16.6794474460244
+     6: 0.000571  pred: 0.000464
+     7: 0.002461  pred: 0.002082
+     8: 0.008115  pred: 0.009336
+     9: 0.033822  pred: 0.041871
+    10: 0.147008  pred: 0.187784
+    11: 0.754938  pred: 0.842177
+    12: 3.996532  pred: 3.777013
+    13: 22.350366  pred: 16.939223
 
 
 #### c. Replace namedtuples with simple tuples
+* I was just curious how much overhead there was in using namedtuples.  It turns out it's significant. (~2x speedup)
 
 
 ```python
@@ -434,7 +464,7 @@ nsolns = solution3c(NQUEEN)
 print("Found {} solutions".format(nsolns))
 ```
 
-    Found 724 solutions
+    Found 92 solutions
 
 
 
@@ -444,20 +474,22 @@ n, y = zip(*time3c)
 pred3c = expfit(n, y)
 ```
 
-    exp(a): 4.654886
-    b: -17.44134934692532
-     6: 0.000386  pred: 0.000271
-     7: 0.001397  pred: 0.001261
-     8: 0.005034  pred: 0.005869
-     9: 0.024744  pred: 0.027321
-    10: 0.091425  pred: 0.127177
-    11: 0.477020  pred: 0.591995
-    12: 2.436652  pred: 2.755668
-    13: 13.975180  pred: 12.827320
-    14: 87.310678  pred: 59.709713
+    exp(a): 4.670683
+    b: -17.50889589973632
+     6: 0.000372  pred: 0.000258
+     7: 0.001244  pred: 0.001207
+     8: 0.005280  pred: 0.005637
+     9: 0.021300  pred: 0.026327
+    10: 0.101429  pred: 0.122967
+    11: 0.437754  pred: 0.574338
+    12: 2.445329  pred: 2.682552
+    13: 13.654391  pred: 12.529350
+    14: 83.227663  pred: 58.520626
 
 
 ### 4. Replace iterative search with a recursive search
+* This doesn't reduce the number of positions that are examined, but it avoids having to manage a queue.  This both simplifies the logic a little, and reduces memory use.
+* The logic for deciding when to give up is a little more efficient here, too.
 
 
 ```python
@@ -486,7 +518,7 @@ nsolns = solution4(NQUEEN)
 print("Found {} solutions".format(nsolns))
 ```
 
-    Found 724 solutions
+    Found 92 solutions
 
 
 
@@ -496,17 +528,17 @@ n, y = zip(*time4)
 pred4 = expfit(n, y)
 ```
 
-    exp(a): 4.749389
-    b: -18.10717767707088
-     6: 0.000224  pred: 0.000157
-     7: 0.000786  pred: 0.000746
-     8: 0.003206  pred: 0.003542
-     9: 0.013826  pred: 0.016823
-    10: 0.062648  pred: 0.079897
-    11: 0.317552  pred: 0.379461
-    12: 1.623624  pred: 1.802209
-    13: 9.273949  pred: 8.559392
-    14: 56.707587  pred: 40.651879
+    exp(a): 4.671884
+    b: -17.89365250898106
+     6: 0.000234  pred: 0.000176
+     7: 0.000932  pred: 0.000823
+     8: 0.003743  pred: 0.003844
+     9: 0.013693  pred: 0.017960
+    10: 0.070447  pred: 0.083909
+    11: 0.305075  pred: 0.392011
+    12: 1.580122  pred: 1.831430
+    13: 9.564014  pred: 8.556227
+    14: 56.738100  pred: 39.973701
 
 
 ### Plot timings for the different solutions
@@ -519,7 +551,7 @@ plot_timings(('soln1', pred1), ('soln2', pred2), ('soln2b', pred2b), ('soln3', p
 
 
 <div class="bk-root">
-    <div class="bk-plotdiv" id="17750240-daee-4c0a-8ec9-d70e47b60487"></div>
+    <div class="bk-plotdiv" id="b7f2e9fa-c6f0-46a7-9816-e69e82de3be4"></div>
 </div>
 
 
