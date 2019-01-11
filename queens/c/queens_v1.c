@@ -17,9 +17,9 @@ int main(int argc, char** argv)
     err = parse_args(argc, argv);
     if (err) return 1;
 
-    printf("Count solutions to the %d-queens problem (v2)\n", nqueen);
-    
     done = (1 << nqueen) - 1;
+    printf("Count solutions to the %d-queens problem\n", nqueen);
+
     count = count_solutions(0, 0, 0, 0);
     printf("Found %d solutions\n", count);
 
@@ -67,7 +67,7 @@ void binstr(u_int32_t value, int nbits, char *buf, int buflen)
 int count_solutions(const int level, const u_int32_t col, const u_int32_t ld, const u_int32_t rd)
 {
     u_int32_t excl = (col | ld | rd) & done;
-    u_int32_t avail, newq;
+    u_int32_t newq;
     int solutions = 0;
 
     if (excl == done)
@@ -75,12 +75,11 @@ int count_solutions(const int level, const u_int32_t col, const u_int32_t ld, co
     else if (level == nqueen-1)
         return 1;
 
-    avail = ~excl & done;
-    while (avail) {
-        newq = avail & -avail;
-        solutions += count_solutions(level+1, (col | newq),
-                                     (ld | newq) << 1, (rd | newq) >> 1);
-        avail -= newq;
+    for (newq = 1 << (nqueen - 1); newq; newq = newq >> 1) {
+        if (!(excl & newq)) {
+            solutions += count_solutions(level+1, (col | newq),
+                                         (ld | newq) << 1, (rd | newq) >> 1);
+        }
     }
     return solutions;
 }

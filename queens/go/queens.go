@@ -10,13 +10,6 @@ import (
 
 type bitsType uint32
 
-type stateType struct {
-	sz  uint32   // board size
-	col bitsType // position is occupied by a queen
-	rd  bitsType // position is attacked from the left
-	ld  bitsType // position is attacked from the right
-}
-
 // flags
 var boardSize = flag.Int("size", 8, "the board size")
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
@@ -27,7 +20,7 @@ var done bitsType
 func main() {
 	flag.Parse()
 
-	fmt.Printf("Find all solutions to the %d-Queens Problems\n", *boardSize)
+	fmt.Printf("Find all solutions to the %d-Queens Problems (v2)\n", *boardSize)
 
 	done = bitsType((1 << uint32(*boardSize)) - 1)
 
@@ -40,44 +33,27 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	initState := newState(uint32(*boardSize))
-	solutions := countSolutions(0, initState)
+	solutions := countSolutions(bitsType(0), bitsType(0), bitsType(0))
 	fmt.Printf("Found %d solutions\n", solutions)
 
 }
 
-// newState returns a newly allocated, zero-valued stateType.
-func newState(size uint32) stateType {
-	return stateType{size, 0, 0, 0}
-}
-
-// addQueen returns a new stateType, created from the given stateType by
-// adding a new queen at the position indicated by the newQueen bit mask.
-// It's assumed that only one bit of newQueen is non-zero, and that (s.col & newQueen) is zero.
-func addQueen(s *stateType, newQueen bitsType) stateType {
-	return stateType{s.sz,
-		s.col | newQueen,
-		(s.rd | newQueen) >> 1,
-		(s.ld | newQueen) << 1}
-}
-
-func countSolutions(level uint32, s stateType) int {
+func countSolutions(col, ld, rd bitsType) int {
 	solutions := 0
-	excl := (s.col | s.ld | s.rd) & done
-
-	if excl == done {
-		return 0
-	} else if level+1 == s.sz {
+	if col == done {
 		return 1
 	}
 
-	newQueen := bitsType(1 << (s.sz - 1))
-	for newQueen != 0 {
-		if (newQueen & excl) == 0 {
-			newState := addQueen(&s, newQueen)
-			solutions += countSolutions(level+1, newState)
-		}
-		newQueen = newQueen >> 1
+	excl := (col | ld | rd) & done
+	if excl == done {
+		return 0
+	}
+
+	avail := ^excl & done
+	for avail > 0 {
+		newQueen := avail & -avail
+		solutions += countSolutions(col|newQueen, (ld|newQueen)<<1, (rd|newQueen)>>1)
+		avail -= newQueen
 	}
 	return solutions
 }
